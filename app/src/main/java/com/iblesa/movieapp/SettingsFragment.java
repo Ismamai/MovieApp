@@ -14,7 +14,7 @@ import android.support.v7.preference.PreferenceScreen;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -42,5 +42,27 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 listPreference.setSummary(listPreference.getEntries()[indexOfValue]);
             }
         }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        PreferenceScreen preferenceScreen = getPreferenceScreen();
+        Preference preference = preferenceScreen.findPreference(key);
+        String value = sharedPreferences.getString(key, "");
+        setPreferenceSummary(preference, value);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //registering listener
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //Unregistering listener
+        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 }
