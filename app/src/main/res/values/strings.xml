@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">MovieApp</string>
     <string name="action_settings">Settings</string>
+    <string name="preference_sort_key">sort</string>
+    <string name="preference_sort_title">Sort By</string>
+    <string name="preference_sort_value_date">date</string>
+    <string name="preference_sort_value_title">title</string>
+    <string name="preference_sort_label_date">Date</string>
+    <string name="preference_sort_label_title">Title</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
