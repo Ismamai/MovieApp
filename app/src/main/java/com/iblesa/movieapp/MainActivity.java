@@ -14,7 +14,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
-    private static final String TAG = "iblesa_app";
+    public static final String TAG = "iblesa_app";
     private RecyclerView recyclerView;
 
     @Override

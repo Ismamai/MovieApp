@@ -2,10 +2,13 @@ package com.iblesa.movieapp;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -21,7 +24,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
         View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
-        MovieViewHolder holder = new MovieViewHolder(view);
+        MovieViewHolder holder = new MovieViewHolder(view, context);
         return holder;
     }
 
@@ -36,15 +39,19 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder {
-        TextView holder;
+        ImageView holder;
+        private final Context context;
 
-        MovieViewHolder(View itemView) {
+        MovieViewHolder(View itemView, Context context) {
             super(itemView);
-            holder = itemView.findViewById(R.id.tv_movie);
+            holder = itemView.findViewById(R.id.iv_movie);
+            this.context = context;
         }
 
         void bind(int element) {
-            holder.setText(String.valueOf(element));
+//            Picasso.with(context).load("http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg").into(holder);
+            Picasso.with(context).load(R.drawable.sample_movie_poster).into(holder);
+            Log.d(MainActivity.TAG, "Loading img " + element);
         }
     }
 }
