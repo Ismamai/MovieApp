@@ -7,6 +7,7 @@
         android:id="@+id/iv_movie"
         android:layout_width="185dp"
         android:layout_height="277dp"
+        android:layout_margin="8dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:layout_gravity="center"
