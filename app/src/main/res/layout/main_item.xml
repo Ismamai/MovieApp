@@ -9,6 +9,7 @@
         android:layout_height="277dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
+        android:layout_gravity="center"
         />
 
 </FrameLayout>
