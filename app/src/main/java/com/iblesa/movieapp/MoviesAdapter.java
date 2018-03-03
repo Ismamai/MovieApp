@@ -49,8 +49,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         }
 
         void bind(int element) {
-//            Picasso.with(context).load("http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg").into(holder);
-            Picasso.with(context).load(R.drawable.sample_movie_poster).into(holder);
+            Picasso.with(context).load("http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg").into(holder);
+//            Picasso.with(context).load(R.drawable.sample_movie_poster).into(holder);
             Log.d(MainActivity.TAG, "Loading img " + element);
         }
     }
