@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso;
 
 
 /**
- * Created by iblesa on 26/02/2018.
+ * Adapter used by ReyclerView
  */
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
@@ -24,8 +24,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
         View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
-        MovieViewHolder holder = new MovieViewHolder(view, context);
-        return holder;
+        return new MovieViewHolder(view, context);
     }
 
     @Override
@@ -49,7 +48,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         }
 
         void bind(int element) {
-            Picasso.with(context).load("http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg").into(holder);
+            String imgSample = "http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
+            Picasso.with(context).load(imgSample)
+                    .placeholder(R.drawable.progress_animation)
+                    .into(holder);
 //            Picasso.with(context).load(R.drawable.sample_movie_poster).into(holder);
             Log.d(MainActivity.TAG, "Loading img " + element);
         }
