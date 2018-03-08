@@ -11,6 +11,7 @@
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:layout_gravity="center"
+        android:contentDescription="@string/movie_poster"
         />
 
 </FrameLayout>
