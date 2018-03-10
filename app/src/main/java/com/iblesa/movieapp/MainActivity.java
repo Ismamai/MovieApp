@@ -12,10 +12,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.iblesa.movieapp.model.Movie;
+import com.iblesa.movieapp.model.SortCriteria;
+import com.iblesa.movieapp.network.MovieAPI;
+import com.iblesa.movieapp.util.MovieParser;
+
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     public static final String TAG = "iblesa_app";
     private RecyclerView recyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +36,27 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         recyclerView = findViewById(R.id.rv_movies);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
-        MoviesAdapter adapter = new MoviesAdapter();
+        List<Movie> data = new ArrayList<>();
+        String key = getString(R.string.themoviedb_api_key);
+
+    //    MovieAPI api = new MovieAPI(key);
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String criteria = defaultSharedPreferences.getString(getString(R.string.preference_sort_key), getString(R.string.preference_sort_value_popular));
+        SortCriteria sortCriteria;
+        try {
+            sortCriteria = new SortCriteria(criteria);
+        } catch (IllegalArgumentException argument) {
+            Log.e(TAG, "Value set for SortCriteria is not good " + criteria);
+            sortCriteria = new SortCriteria(getString(R.string.preference_sort_value_popular));
+        }
+       // api.execute(sortCriteria);
+        List<Movie> movies = null;
+        try {
+            movies = MovieParser.parseJSON(getString(R.string.movies_result));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        MoviesAdapter adapter = new MoviesAdapter(movies);
         recyclerView.setAdapter(adapter);
     }
 
