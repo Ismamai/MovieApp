@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import com.iblesa.movieapp.model.Movie;
 import com.iblesa.movieapp.model.SortCriteria;
 import com.iblesa.movieapp.network.MovieAPI;
+import com.iblesa.movieapp.util.FakeMoviesData;
 import com.iblesa.movieapp.util.MovieParser;
 
 import org.json.JSONException;
@@ -24,6 +25,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
+    public static final String TAG = "iblesa_app";
     private RecyclerView recyclerView;
 
 
@@ -50,11 +52,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
        // api.execute(sortCriteria);
         List<Movie> movies = null;
-        try {
-            movies = MovieParser.parseJSON(getString(R.string.movies_result));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        movies = FakeMoviesData.getFakeMoviesData(this);
         MoviesAdapter adapter = new MoviesAdapter(movies);
         recyclerView.setAdapter(adapter);
     }
