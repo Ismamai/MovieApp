@@ -8,7 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.iblesa.movieapp.model.Movie;
+import com.iblesa.movieapp.network.MovieAPI;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 
 /**
@@ -17,6 +21,12 @@ import com.squareup.picasso.Picasso;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
 
+    private List<Movie> movies;
+
+    public MoviesAdapter(List<Movie> movies) {
+        this.movies = movies;
+    }
+
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -24,6 +34,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
         View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
+
         return new MovieViewHolder(view, context);
     }
 
@@ -34,7 +45,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     @Override
     public int getItemCount() {
-        return 20;
+        return movies.size();
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder {
@@ -48,11 +59,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         }
 
         void bind(int element) {
-            String imgSample = "http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
+            Movie movie = movies.get(element);
+            String posterPath = movie.getPosterPath();
+            String imgSample = "http://image.tmdb.org/t/p/w185/"+posterPath;
             Picasso.with(context).load(imgSample)
                     .placeholder(R.drawable.progress_animation)
                     .into(holder);
-//            Picasso.with(context).load(R.drawable.sample_movie_poster).into(holder);
             Log.d(MainActivity.TAG, "Loading img " + element);
         }
     }
