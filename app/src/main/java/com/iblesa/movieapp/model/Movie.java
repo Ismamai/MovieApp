@@ -106,7 +106,7 @@ public class Movie {
     /**
      * Builder class.
      */
-    public class Builder {
+    public static class Builder {
 
         private int id = -1;
         private String title;
