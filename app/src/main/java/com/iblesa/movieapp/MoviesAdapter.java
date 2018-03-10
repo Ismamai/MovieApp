@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.iblesa.movieapp.model.Movie;
-import com.iblesa.movieapp.network.MovieAPI;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -65,7 +64,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             Picasso.with(context).load(imgSample)
                     .placeholder(R.drawable.progress_animation)
                     .into(holder);
-            Log.d(MainActivity.TAG, "Loading img " + element);
+            Log.d(Constants.TAG, "Loading img " + element);
         }
     }
 }

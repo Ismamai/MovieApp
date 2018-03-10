@@ -2,7 +2,7 @@ package com.iblesa.movieapp.util;
 
 import android.util.Log;
 
-import com.iblesa.movieapp.MainActivity;
+import com.iblesa.movieapp.Constants;
 import com.iblesa.movieapp.model.Movie;
 
 import org.json.JSONArray;
@@ -46,7 +46,7 @@ public class MovieParser {
             try {
                 movies.add(parseMovie(element));
             } catch (JSONException e) {
-                Log.e(MainActivity.TAG, "Error parsing movie ", e);
+                Log.e(Constants.TAG, "Error parsing movie ", e);
             }
 
         }
@@ -75,7 +75,7 @@ public class MovieParser {
         } else if (compulsory) {
 
             String errorMessage = "JSONObject does not have compulsory property, propertyName = " + propertyName + ", jsonObject = " + jsonObject.toString();
-            Log.e(MainActivity.TAG, errorMessage);
+            Log.e(Constants.TAG, errorMessage);
             throw new JSONException(errorMessage);
         }
         return null;
@@ -87,7 +87,7 @@ public class MovieParser {
         }
 
         String errorMessage = "JSONObject does not have compulsory property, propertyName = " + propertyName + ", jsonObject = " + jsonObject.toString();
-        Log.e(MainActivity.TAG, errorMessage);
+        Log.e(Constants.TAG, errorMessage);
         throw new JSONException(errorMessage);
     }
 
@@ -97,7 +97,7 @@ public class MovieParser {
         }
 
         String errorMessage = "JSONObject does not have compulsory property, propertyName = " + propertyName + ", jsonObject = " + jsonObject.toString();
-        Log.e(MainActivity.TAG, errorMessage);
+        Log.e(Constants.TAG, errorMessage);
         throw new JSONException(errorMessage);
     }
 
@@ -107,7 +107,7 @@ public class MovieParser {
         }
 
         String errorMessage = "JSONObject does not have compulsory property, propertyName = " + propertyName + ", jsonObject = " + jsonObject.toString();
-        Log.e(MainActivity.TAG, errorMessage);
+        Log.e(Constants.TAG, errorMessage);
         throw new JSONException(errorMessage);
     }
 

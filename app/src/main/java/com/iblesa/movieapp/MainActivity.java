@@ -24,7 +24,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
-    public static final String TAG = "iblesa_app";
     private RecyclerView recyclerView;
 
 
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         try {
             sortCriteria = new SortCriteria(criteria);
         } catch (IllegalArgumentException argument) {
-            Log.e(TAG, "Value set for SortCriteria is not good " + criteria);
+            Log.e(Constants.TAG, "Value set for SortCriteria is not good " + criteria);
             sortCriteria = new SortCriteria(getString(R.string.preference_sort_value_popular));
         }
        // api.execute(sortCriteria);
@@ -101,6 +100,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         String value = sharedPreferences.getString(key, "");
-        Log.d(TAG, "Preference has changed its value (" +key+") =  " + value );
+        Log.d(Constants.TAG, "Preference has changed its value (" +key+") =  " + value );
     }
 }
