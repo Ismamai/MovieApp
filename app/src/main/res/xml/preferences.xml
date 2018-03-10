@@ -5,6 +5,6 @@
     android:title="@string/preference_sort_title"
     android:entries="@array/preference_sort_labels"
     android:entryValues="@array/preference_sort_values"
-    android:defaultValue="@string/preference_sort_value_date"
+    android:defaultValue="@string/preference_sort_value_popular"
     />
 </PreferenceScreen>
