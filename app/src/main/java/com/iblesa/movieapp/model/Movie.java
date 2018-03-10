@@ -12,13 +12,20 @@ public class Movie {
     private String overview;
     private String releaseDate;
     private float voteAverage;
+    private String posterPath;
+    private String backdrop_path;
+    private boolean video;
 
-    public Movie(int id, String title, String overview, String releaseDate, float voteAverage) {
+
+    public Movie(int id, String title, String overview, String releaseDate, float voteAverage, String posterPath, String backdrop_path, boolean video) {
         this.id = id;
         this.title = title;
         this.overview = overview;
         this.releaseDate = releaseDate;
         this.voteAverage = voteAverage;
+        this.posterPath = posterPath;
+        this.backdrop_path = backdrop_path;
+        this.video = video;
     }
 
     /**
@@ -70,7 +77,22 @@ public class Movie {
                 ", overview='" + overview + '\'' +
                 ", releaseDate='" + releaseDate + '\'' +
                 ", voteAverage=" + voteAverage +
+                ", posterPath='" + posterPath + '\'' +
+                ", backdrop_path='" + backdrop_path + '\'' +
+                ", video=" + video +
                 '}';
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public String getBackdrop_path() {
+        return backdrop_path;
+    }
+
+    public boolean isVideo() {
+        return video;
     }
 
     /**
@@ -91,6 +113,9 @@ public class Movie {
         private String overview;
         private String releaseDate;
         private float voteAverage;
+        private String posterPath;
+        private String backdrop_path;
+        private boolean video;
 
         public Builder(Movie movie) {
             this.id = movie.getId();
@@ -98,6 +123,9 @@ public class Movie {
             this.overview = movie.getOverview();
             this.releaseDate = movie.getReleaseDate();
             this.voteAverage = movie.getVoteAverage();
+            this.posterPath = movie.getPosterPath();
+            this.backdrop_path = movie.getBackdrop_path();
+            this.video = movie.isVideo();
         }
 
         public Builder() {
@@ -154,12 +182,27 @@ public class Movie {
             return this;
         }
 
+        public Builder posterPath(String posterPath) {
+            this.posterPath = posterPath;
+            return this;
+        }
+
+        public Builder backdropPath(String backdrop_path) {
+            this.backdrop_path = backdrop_path;
+            return this;
+        }
+
+        public Builder video(boolean video) {
+            this.video = video;
+            return this;
+        }
+
         /**
          *
          * @return Movie object with specified values
          */
         public Movie build() {
-            return new Movie(id, title, overview, releaseDate, voteAverage);
+            return new Movie(id, title, overview, releaseDate, voteAverage, posterPath, backdrop_path, video);
         }
     }
 }
