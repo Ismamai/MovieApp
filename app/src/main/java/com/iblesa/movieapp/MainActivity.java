@@ -16,11 +16,6 @@ import com.iblesa.movieapp.model.Movie;
 import com.iblesa.movieapp.model.SortCriteria;
 import com.iblesa.movieapp.network.MovieAPI;
 import com.iblesa.movieapp.util.FakeMoviesData;
-import com.iblesa.movieapp.util.MovieParser;
-
-import org.json.JSONException;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
@@ -39,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         recyclerView.setLayoutManager(gridLayoutManager);
         String key = getString(R.string.themoviedb_api_key);
         List<Movie> movies = null;
-    //    MovieAPI api = new MovieAPI(key);
+        MovieAPI api = new MovieAPI(key);
         SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String criteria = defaultSharedPreferences.getString(getString(R.string.preference_sort_key), getString(R.string.preference_sort_value_popular));
         SortCriteria sortCriteria;
@@ -49,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             Log.e(Constants.TAG, "Value set for SortCriteria is not good " + criteria);
             sortCriteria = new SortCriteria(getString(R.string.preference_sort_value_popular));
         }
-        // api.execute(sortCriteria);
+         api.execute(sortCriteria);
 
         if (movies == null || movies.size() == 0) {
             movies = FakeMoviesData.getFakeMoviesData(this);
