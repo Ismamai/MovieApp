@@ -11,6 +11,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.iblesa.movieapp.model.Movie;
 import com.iblesa.movieapp.model.SortCriteria;
@@ -21,8 +24,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     public static final String TAG = "iblesa_app";
-    private RecyclerView recyclerView;
 
+    private RecyclerView recyclerView;
+    private TextView errorMessageDisplay;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         String key = getString(R.string.themoviedb_api_key);
         MoviesAdapter adapter = new MoviesAdapter();
         recyclerView.setAdapter(adapter);
-        MovieAPI api = new MovieAPI(key, adapter);
+        MovieAPI api = new MovieAPI(key, adapter, this);
         SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String criteria = defaultSharedPreferences.getString(getString(R.string.preference_sort_key), getString(R.string.preference_sort_value_popular));
         SortCriteria sortCriteria;
@@ -91,5 +96,17 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         String value = sharedPreferences.getString(key, "");
         Log.d(Constants.TAG, "Preference has changed its value (" +key+") =  " + value );
+    }
+
+
+    public void showError() {
+        recyclerView.setVisibility(View.INVISIBLE);
+        errorMessageDisplay.setVisibility(View.VISIBLE);
+    }
+
+
+    public void showData() {
+        recyclerView.setVisibility(View.VISIBLE);
+        errorMessageDisplay.setVisibility(View.INVISIBLE);
     }
 }

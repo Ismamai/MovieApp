@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.iblesa.movieapp.Constants;
+import com.iblesa.movieapp.MainActivity;
 import com.iblesa.movieapp.MoviesAdapter;
 import com.iblesa.movieapp.model.Movie;
 import com.iblesa.movieapp.model.SortCriteria;
@@ -30,14 +31,18 @@ public class MovieAPI extends AsyncTask<SortCriteria, Void, List<Movie>> {
     private static final String POPULAR_URL = "popular";
     private static final String RATE_URL = "top_rated";
     private static final String API_KEY_PARAM = "api_key";
+
     private String param;
     private MoviesAdapter moviesAdapter;
+    private MainActivity activity;
 
 
-    public MovieAPI(String param, MoviesAdapter moviesAdapter) {
+    public MovieAPI(String param, MoviesAdapter moviesAdapter, MainActivity activity) {
         this.param = param;
         this.moviesAdapter = moviesAdapter;
+        this.activity = activity;
     }
+
 
     @Override
     protected List<Movie> doInBackground(SortCriteria... sortTypes) {
@@ -65,12 +70,16 @@ public class MovieAPI extends AsyncTask<SortCriteria, Void, List<Movie>> {
     private List<Movie> getMoviesFromUrl(Uri uri) {
         try {
             String responseFromHttpUrl = getResponseFromHttpUrl(new URL(uri.toString()));
-            return MovieParser.parseJSON(responseFromHttpUrl);
+            List<Movie> movies = MovieParser.parseJSON(responseFromHttpUrl);
+            activity.showData();
+            return movies;
         } catch (IOException e) {
             Log.e(Constants.TAG, "Error getting external content for url " + uri.toString(), e);
+            activity.showError();
             return null;
         } catch (JSONException e) {
             Log.e(Constants.TAG, "Error parsing json", e);
+            activity.showError();
             return null;
         }
     }
@@ -109,4 +118,5 @@ public class MovieAPI extends AsyncTask<SortCriteria, Void, List<Movie>> {
         }
         super.onPostExecute(movies);
     }
+
 }
