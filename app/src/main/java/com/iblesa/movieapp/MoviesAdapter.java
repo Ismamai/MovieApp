@@ -22,8 +22,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     private List<Movie> movies;
 
-    public MoviesAdapter(List<Movie> movies) {
-        this.movies = movies;
+    public MoviesAdapter() {
     }
 
     @Override
@@ -44,7 +43,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        if (movies == null) {
+            return 0;
+        } else {
+            return movies.size();
+        }
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder {
@@ -66,5 +69,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                     .into(holder);
             Log.d(Constants.TAG, "Loading img " + element);
         }
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+        notifyDataSetChanged();
     }
 }

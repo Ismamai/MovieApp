@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.iblesa.movieapp.Constants;
+import com.iblesa.movieapp.MoviesAdapter;
 import com.iblesa.movieapp.model.Movie;
 import com.iblesa.movieapp.model.SortCriteria;
 import com.iblesa.movieapp.util.MovieParser;
@@ -30,10 +31,12 @@ public class MovieAPI extends AsyncTask<SortCriteria, Void, List<Movie>> {
     private static final String RATE_URL = "top_rated";
     private static final String API_KEY_PARAM = "api_key";
     private String param;
+    private MoviesAdapter moviesAdapter;
 
 
-    public MovieAPI(String param) {
+    public MovieAPI(String param, MoviesAdapter moviesAdapter) {
         this.param = param;
+        this.moviesAdapter = moviesAdapter;
     }
 
     @Override
@@ -97,5 +100,13 @@ public class MovieAPI extends AsyncTask<SortCriteria, Void, List<Movie>> {
         } finally {
             urlConnection.disconnect();
         }
+    }
+
+    @Override
+    protected void onPostExecute(List<Movie> movies) {
+        if (movies!= null) {
+            moviesAdapter.setMovies(movies);
+        }
+        super.onPostExecute(movies);
     }
 }
