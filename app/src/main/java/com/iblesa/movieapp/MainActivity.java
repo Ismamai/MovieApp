@@ -37,9 +37,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         recyclerView = findViewById(R.id.rv_movies);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
-        List<Movie> data = new ArrayList<>();
         String key = getString(R.string.themoviedb_api_key);
-
+        List<Movie> movies = null;
     //    MovieAPI api = new MovieAPI(key);
         SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String criteria = defaultSharedPreferences.getString(getString(R.string.preference_sort_key), getString(R.string.preference_sort_value_popular));
@@ -50,9 +49,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             Log.e(Constants.TAG, "Value set for SortCriteria is not good " + criteria);
             sortCriteria = new SortCriteria(getString(R.string.preference_sort_value_popular));
         }
-       // api.execute(sortCriteria);
-        List<Movie> movies = null;
-        movies = FakeMoviesData.getFakeMoviesData(this);
+        // api.execute(sortCriteria);
+
+        if (movies == null || movies.size() == 0) {
+            movies = FakeMoviesData.getFakeMoviesData(this);
+        }
+
         MoviesAdapter adapter = new MoviesAdapter(movies);
         recyclerView.setAdapter(adapter);
     }
