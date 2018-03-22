@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         String key = getString(R.string.themoviedb_api_key);
         MoviesAdapter adapter = new MoviesAdapter();
         recyclerView.setAdapter(adapter);
+        loadData(key, adapter);
+    }
+
+    private void loadData(String key, MoviesAdapter adapter) {
         MovieAPI api = new MovieAPI(key, adapter);
         SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String criteria = defaultSharedPreferences.getString(getString(R.string.preference_sort_key), getString(R.string.preference_sort_value_popular));
@@ -62,8 +66,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             Log.e(Constants.TAG, "Value set for SortCriteria is not good " + criteria);
             sortCriteria = new SortCriteria(getString(R.string.preference_sort_value_popular));
         }
-         api.execute(sortCriteria);
-
+        showData();
+        api.execute(sortCriteria);
     }
 
     private void setupSharedPreferences() {
@@ -207,7 +211,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected void onPostExecute(List<Movie> movies) {
+            progressBar.setVisibility(View.INVISIBLE);
             if (movies != null) {
                 showData();
                 moviesAdapter.setMovies(movies);
