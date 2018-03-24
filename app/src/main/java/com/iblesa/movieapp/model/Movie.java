@@ -1,11 +1,14 @@
 package com.iblesa.movieapp.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Movie model class. Contains all Movie properties. This class is immutable, in order to
  * modify its values, just use Builder provided.
  */
 
-public class Movie {
+public class Movie implements Parcelable {
 
     private int id;
     private String title;
@@ -28,6 +31,47 @@ public class Movie {
         this.video = video;
     }
 
+    private Movie(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        overview = in.readString();
+        releaseDate = in.readString();
+        posterPath = in.readString();
+        backdrop_path = in.readString();
+        voteAverage = in.readFloat();
+        video = in.readInt() == 1;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(overview);
+        dest.writeString(releaseDate);
+        dest.writeString(posterPath);
+        dest.writeString(backdrop_path);
+        dest.writeFloat(voteAverage);
+        dest.writeInt(video ? 1 : 0);
+
+    }
+
+    public final static Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
     /**
      *
      * @return unique id of the movie
