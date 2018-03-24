@@ -33,8 +33,6 @@ import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, MoviesAdapter.ListItemClickListener{
 
-    public static final String TAG = "iblesa_app";
-
     private RecyclerView recyclerView;
     private TextView errorMessageDisplay;
     private ProgressBar progressBar;
