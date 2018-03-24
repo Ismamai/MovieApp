@@ -22,7 +22,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     private List<Movie> movies;
 
-    public MoviesAdapter() {
+    final private ListItemClickListener onClickListerner;
+
+    public MoviesAdapter(ListItemClickListener clickListener) {
+        this.onClickListerner = clickListener;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         }
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder {
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView holder;
         private final Context context;
 
@@ -58,6 +61,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             super(itemView);
             holder = itemView.findViewById(R.id.iv_movie);
             this.context = context;
+            itemView.setOnClickListener(this);
         }
 
         void bind(int element) {
@@ -69,10 +73,21 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                     .into(holder);
             Log.d(Constants.TAG, "Loading img " + element);
         }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            Movie movie = movies.get(adapterPosition);
+            onClickListerner.onListItemClick(movie);
+        }
     }
 
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
         notifyDataSetChanged();
+    }
+
+    public interface ListItemClickListener {
+        void onListItemClick(Movie movieSelected);
     }
 }

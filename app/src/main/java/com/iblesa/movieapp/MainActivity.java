@@ -31,7 +31,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Scanner;
 
-public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, MoviesAdapter.ListItemClickListener{
 
     public static final String TAG = "iblesa_app";
 
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         String key = getString(R.string.themoviedb_api_key);
-        MoviesAdapter adapter = new MoviesAdapter();
+        MoviesAdapter adapter = new MoviesAdapter(this);
         recyclerView.setAdapter(adapter);
         loadData(key, adapter);
     }
@@ -124,6 +124,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private void showData() {
         recyclerView.setVisibility(View.VISIBLE);
         errorMessageDisplay.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onListItemClick(Movie movieSelected) {
+        Log.d(Constants.TAG, "Item selected is " + movieSelected.toString());
     }
 
     /**
