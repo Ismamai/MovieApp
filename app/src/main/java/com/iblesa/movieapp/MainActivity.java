@@ -129,6 +129,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     public void onListItemClick(Movie movieSelected) {
         Log.d(Constants.TAG, "Item selected is " + movieSelected.toString());
+        Intent intentDetailActivity = new Intent(this, DetailActivity.class);
+        intentDetailActivity.putExtra(Intent.EXTRA_TEXT, movieSelected);
+        startActivity(intentDetailActivity);
     }
 
     /**
