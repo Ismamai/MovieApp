@@ -8,6 +8,9 @@ import android.util.Log;
 
 import com.iblesa.movieapp.databinding.ActivityDetailBinding;
 import com.iblesa.movieapp.model.Movie;
+import com.squareup.picasso.Picasso;
+
+import java.util.Locale;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -25,7 +28,20 @@ public class DetailActivity extends AppCompatActivity {
                 Movie movie = intentThatStartedThisActivity.getParcelableExtra(Intent.EXTRA_TEXT);
                 Log.d(Constants.TAG, "Movie passed to activity " + movie);
                 activityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
+                populateUI(movie);
             }
         }
+    }
+
+    private void populateUI(Movie movie) {
+        String posterPath = movie.getPosterPath();
+        String imgSample = "http://image.tmdb.org/t/p/w185/" + posterPath;
+        Picasso.with(this).load(imgSample)
+                .placeholder(R.drawable.progress_animation)
+                .into(activityDetailBinding.imageView);
+        activityDetailBinding.tvTitle.setText(movie.getTitle());
+        activityDetailBinding.tvReleaseDate.setText(movie.getReleaseDate());
+        activityDetailBinding.tvVoteAverage.setText(String.format(Locale.getDefault(), "%.2f", movie.getVoteAverage()));
+        activityDetailBinding.tvSynopsis.setText(movie.getOverview());
     }
 }
