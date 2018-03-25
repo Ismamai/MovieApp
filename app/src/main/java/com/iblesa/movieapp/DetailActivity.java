@@ -36,6 +36,7 @@ public class DetailActivity extends AppCompatActivity {
     private void populateUI(Movie movie) {
         String posterPath = movie.getPosterPath();
         String imgSample = "http://image.tmdb.org/t/p/w185/" + posterPath;
+        Log.d(Constants.TAG, "Loading image for movie detail url = " + imgSample);
         Picasso.with(this).load(imgSample)
                 .placeholder(R.drawable.progress_animation)
                 .into(activityDetailBinding.imageView);
