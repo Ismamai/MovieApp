@@ -1,13 +1,17 @@
 package com.iblesa.movieapp;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.iblesa.movieapp.databinding.ActivityDetailBinding;
 import com.iblesa.movieapp.model.Movie;
 
 public class DetailActivity extends AppCompatActivity {
+
+    ActivityDetailBinding activityDetailBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +24,7 @@ public class DetailActivity extends AppCompatActivity {
             if (intentThatStartedThisActivity.hasExtra(Intent.EXTRA_TEXT)) {
                 Movie movie = intentThatStartedThisActivity.getParcelableExtra(Intent.EXTRA_TEXT);
                 Log.d(Constants.TAG, "Movie passed to activity " + movie);
+                activityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
             }
         }
     }
