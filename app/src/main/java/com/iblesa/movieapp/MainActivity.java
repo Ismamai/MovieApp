@@ -1,7 +1,10 @@
 package com.iblesa.movieapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
@@ -65,7 +68,18 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             sortCriteria = new SortCriteria(getString(R.string.preference_sort_value_popular));
         }
         showData();
-        api.execute(sortCriteria);
+
+        ConnectivityManager cm =
+                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if (isConnected) {
+            api.execute(sortCriteria);
+        } else {
+            showError();
+        }
     }
 
     private void setupSharedPreferences() {
