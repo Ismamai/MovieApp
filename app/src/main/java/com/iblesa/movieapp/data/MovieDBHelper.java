@@ -39,7 +39,8 @@ public class MovieDBHelper extends SQLiteOpenHelper {
                 MovieEntry.COLUMN_VOTE_AVERAGE + " REAL NOT NULL, " +
                 MovieEntry.COLUMN_VIDEO + " INTEGER, " +
                 MovieEntry.COLUMN_POSTER_PATH + " TEXT NOT NULL, " +
-                MovieEntry.COLUMN_BACKDROP_PATH + " TEXT NOT NULL " +
+                MovieEntry.COLUMN_BACKDROP_PATH + " TEXT NOT NULL, " +
+                MovieEntry.COLUMN_ADDED + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
                 ");";
         Log.d(Constants.TAG, SQL_CREATE_MOVIE_TABLE);
         db.execSQL(SQL_CREATE_MOVIE_TABLE);
