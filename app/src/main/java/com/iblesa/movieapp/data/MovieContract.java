@@ -10,7 +10,7 @@ public class MovieContract {
 
 
     // Authority for this ContentProvider
-    private static final String AUTHORITY = "com.iblesa.movieapp";
+    public static final String AUTHORITY = "com.iblesa.movieapp";
     // BaseContentUri for this provider
     static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
