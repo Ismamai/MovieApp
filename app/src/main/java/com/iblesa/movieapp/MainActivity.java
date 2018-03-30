@@ -18,11 +18,14 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.iblesa.movieapp.data.MovieDBHelper;
 import com.iblesa.movieapp.model.Movie;
 import com.iblesa.movieapp.model.SortCriteria;
 import com.iblesa.movieapp.network.AsyncTaskCompleteListener;
 import com.iblesa.movieapp.network.MovieAPI;
+import com.iblesa.movieapp.util.FakeMoviesData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         if (isConnected) {
             MovieAPI api = new MovieAPI(key, new FetchMyDataTaskCompleteListener());
             api.execute(sortCriteria);
+//            FakeMoviesData.populateFakeData(new MovieDBHelper(this).getWritableDatabase(), FakeMoviesData.getFakeMoviesData(this));
         } else {
             showError();
         }
