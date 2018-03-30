@@ -33,6 +33,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
+        <provider
+            android:authorities="com.iblesa.movieap"
+            android:name=".data.FavoriteMovieContentProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>
