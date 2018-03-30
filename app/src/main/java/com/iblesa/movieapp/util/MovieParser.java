@@ -26,6 +26,7 @@ public class MovieParser {
     private static final String BACKDROP_PATH = "backdrop_path";
     private static final String VIDEO = "video";
     private static final String VOTE_AVERAGE = "vote_average";
+    private static final String POPULARITY = "popularity";
 
     // Pagination fields
     private static final String PAGE = "page";
@@ -62,6 +63,7 @@ public class MovieParser {
         builder.overview(getStringProperty(OVERVIEW, movie, true));
         builder.releaseDate(getStringProperty(RELEASE_DATE, movie, true));
         builder.voteAverage(getCompulsoryFloatProperty(VOTE_AVERAGE, movie));
+        builder.popularity(getCompulsoryFloatProperty(POPULARITY, movie));
         builder.posterPath(getStringProperty(POSTER_PATH, movie, false));
         builder.backdropPath(getStringProperty(BACKDROP_PATH, movie, false));
         builder.video(getCompulsoryBooleanProperty(VIDEO, movie));

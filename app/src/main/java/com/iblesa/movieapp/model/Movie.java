@@ -15,17 +15,19 @@ public class Movie implements Parcelable {
     private String overview;
     private String releaseDate;
     private float voteAverage;
+    private float popularity;
     private String posterPath;
     private String backdrop_path;
     private boolean video;
 
 
-    public Movie(int id, String title, String overview, String releaseDate, float voteAverage, String posterPath, String backdrop_path, boolean video) {
+    public Movie(int id, String title, String overview, String releaseDate, float voteAverage, float popularity, String posterPath, String backdrop_path, boolean video) {
         this.id = id;
         this.title = title;
         this.overview = overview;
         this.releaseDate = releaseDate;
         this.voteAverage = voteAverage;
+        this.popularity = popularity;
         this.posterPath = posterPath;
         this.backdrop_path = backdrop_path;
         this.video = video;
@@ -39,6 +41,7 @@ public class Movie implements Parcelable {
         posterPath = in.readString();
         backdrop_path = in.readString();
         voteAverage = in.readFloat();
+        popularity = in.readFloat();
         video = in.readInt() == 1;
     }
 
@@ -56,6 +59,7 @@ public class Movie implements Parcelable {
         dest.writeString(posterPath);
         dest.writeString(backdrop_path);
         dest.writeFloat(voteAverage);
+        dest.writeFloat(popularity);
         dest.writeInt(video ? 1 : 0);
 
     }
@@ -113,6 +117,14 @@ public class Movie implements Parcelable {
         return voteAverage;
     }
 
+    /**
+     *
+     * @return popularity of the movie
+     */
+    public float getPopularity() {
+        return popularity;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
@@ -121,6 +133,7 @@ public class Movie implements Parcelable {
                 ", overview='" + overview + '\'' +
                 ", releaseDate='" + releaseDate + '\'' +
                 ", voteAverage=" + voteAverage +
+                ", popularity=" + popularity +
                 ", posterPath='" + posterPath + '\'' +
                 ", backdrop_path='" + backdrop_path + '\'' +
                 ", video=" + video +
@@ -157,16 +170,18 @@ public class Movie implements Parcelable {
         private String overview;
         private String releaseDate;
         private float voteAverage;
+        private float popularity;
         private String posterPath;
         private String backdrop_path;
         private boolean video;
 
-        public Builder(Movie movie) {
+        Builder(Movie movie) {
             this.id = movie.getId();
             this.title = movie.getTitle();
             this.overview = movie.getOverview();
             this.releaseDate = movie.getReleaseDate();
             this.voteAverage = movie.getVoteAverage();
+            this.popularity = movie.getPopularity();
             this.posterPath = movie.getPosterPath();
             this.backdrop_path = movie.getBackdrop_path();
             this.video = movie.isVideo();
@@ -226,6 +241,11 @@ public class Movie implements Parcelable {
             return this;
         }
 
+        public Builder popularity(float popularity) {
+            this.popularity = popularity;
+            return this;
+        }
+
         public Builder posterPath(String posterPath) {
             this.posterPath = posterPath;
             return this;
@@ -246,7 +266,7 @@ public class Movie implements Parcelable {
          * @return Movie object with specified values
          */
         public Movie build() {
-            return new Movie(id, title, overview, releaseDate, voteAverage, posterPath, backdrop_path, video);
+            return new Movie(id, title, overview, releaseDate, voteAverage, popularity, posterPath, backdrop_path, video);
         }
     }
 }
