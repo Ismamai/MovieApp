@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.iblesa.movieapp.Constants;
@@ -41,16 +42,7 @@ public class FakeMoviesData {
         List<ContentValues> entries = new ArrayList<>();
 
         for (Movie movie : movies) {
-            ContentValues cv = new ContentValues();
-            cv.put(MovieContract.MovieEntry._ID, movie.getId());
-            cv.put(MovieContract.MovieEntry.COLUMN_TITLE, movie.getTitle());
-            cv.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
-            cv.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, movie.getOverview());
-            cv.put(MovieContract.MovieEntry.COLUMN_POPULARITY, movie.getPopularity());
-            cv.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
-            cv.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, movie.getPosterPath());
-            cv.put(MovieContract.MovieEntry.COLUMN_BACKDROP_PATH, movie.getBackdrop_path());
-            cv.put(MovieContract.MovieEntry.COLUMN_VIDEO, movie.isVideo() ? 1 : 0);
+            ContentValues cv = getContentValues(movie);
             entries.add(cv);
         }
 
@@ -67,5 +59,20 @@ public class FakeMoviesData {
         } finally {
             db.endTransaction();
         }
+    }
+
+    @NonNull
+    private static ContentValues getContentValues(Movie movie) {
+        ContentValues cv = new ContentValues();
+        cv.put(MovieContract.MovieEntry._ID, movie.getId());
+        cv.put(MovieContract.MovieEntry.COLUMN_TITLE, movie.getTitle());
+        cv.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
+        cv.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, movie.getOverview());
+        cv.put(MovieContract.MovieEntry.COLUMN_POPULARITY, movie.getPopularity());
+        cv.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
+        cv.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, movie.getPosterPath());
+        cv.put(MovieContract.MovieEntry.COLUMN_BACKDROP_PATH, movie.getBackdrop_path());
+        cv.put(MovieContract.MovieEntry.COLUMN_VIDEO, movie.isVideo() ? 1 : 0);
+        return cv;
     }
 }
