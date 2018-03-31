@@ -18,14 +18,12 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.iblesa.movieapp.data.MovieDBHelper;
 import com.iblesa.movieapp.model.Movie;
 import com.iblesa.movieapp.model.SortCriteria;
 import com.iblesa.movieapp.network.AsyncTaskCompleteListener;
 import com.iblesa.movieapp.network.MovieAPI;
 import com.iblesa.movieapp.util.FakeMoviesData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

@@ -1,12 +1,17 @@
 package com.iblesa.movieapp.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import static com.iblesa.movieapp.data.MovieContract.MovieEntry.TABLE_NAME;
 
 public class FavoriteMovieContentProvider extends ContentProvider {
     MovieDBHelper dbHelper;
@@ -32,7 +37,25 @@ public class FavoriteMovieContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+        final SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        int match = sUriMatcher.match(uri);
+        Cursor retCursor;
+        switch (match) {
+            case FAVORITES: {
+                retCursor = db.query(TABLE_NAME,
+                        null, null, null, null, null, null);
+                break;
+            }
+            case FAVORITES_WITH_ID: {
+                retCursor = null;
+                break;
+            }
+            default:
+                throw new UnsupportedOperationException("Unkown Uri " + uri);
+
+        }
+        return retCursor;
     }
 
     @Nullable
@@ -44,7 +67,29 @@ public class FavoriteMovieContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        int match = sUriMatcher.match(uri);
+
+        Uri retUri;
+        switch (match) {
+            case FAVORITES: {
+                long id = db.insert(TABLE_NAME,
+                        null, values);
+                if (id > 0) {
+                    retUri = ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, id);
+                } else {
+                    throw new SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            }
+            default:
+                throw new UnsupportedOperationException("Unkown Uri " + uri);
+
+        }
+        //Notify ContentResolver that URI has been modified
+        getContext().getContentResolver().notifyChange(uri, null);
+        return retUri;
     }
 
     @Override
