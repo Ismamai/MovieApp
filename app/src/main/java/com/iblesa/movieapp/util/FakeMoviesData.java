@@ -11,6 +11,7 @@ import com.iblesa.movieapp.Constants;
 import com.iblesa.movieapp.R;
 import com.iblesa.movieapp.data.MovieContract;
 import com.iblesa.movieapp.data.MovieDBHelper;
+import com.iblesa.movieapp.data.MovieUtils;
 import com.iblesa.movieapp.model.Movie;
 
 import org.json.JSONException;
@@ -42,7 +43,7 @@ public class FakeMoviesData {
         List<ContentValues> entries = new ArrayList<>();
 
         for (Movie movie : movies) {
-            ContentValues cv = getContentValues(movie);
+            ContentValues cv = MovieUtils.getContentValues(movie);
             entries.add(cv);
         }
 
@@ -61,18 +62,5 @@ public class FakeMoviesData {
         }
     }
 
-    @NonNull
-    private static ContentValues getContentValues(Movie movie) {
-        ContentValues cv = new ContentValues();
-        cv.put(MovieContract.MovieEntry._ID, movie.getId());
-        cv.put(MovieContract.MovieEntry.COLUMN_TITLE, movie.getTitle());
-        cv.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
-        cv.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, movie.getOverview());
-        cv.put(MovieContract.MovieEntry.COLUMN_POPULARITY, movie.getPopularity());
-        cv.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
-        cv.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, movie.getPosterPath());
-        cv.put(MovieContract.MovieEntry.COLUMN_BACKDROP_PATH, movie.getBackdrop_path());
-        cv.put(MovieContract.MovieEntry.COLUMN_VIDEO, movie.isVideo() ? 1 : 0);
-        return cv;
-    }
+
 }
