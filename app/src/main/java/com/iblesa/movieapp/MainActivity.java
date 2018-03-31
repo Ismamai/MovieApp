@@ -65,21 +65,30 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
         showData();
 
-        ConnectivityManager cm =
-                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        switch (sortCriteria.getCriteria()) {
+            case SortCriteria.POPULAR:
+            case SortCriteria.RATE: {
+                ConnectivityManager cm =
+                        (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        NetworkInfo activeNetwork = null;
-        if (cm != null) {
-            activeNetwork = cm.getActiveNetworkInfo();
-        }
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-        if (isConnected) {
-            MovieAPI api = new MovieAPI(key, new FetchMyDataTaskCompleteListener());
-            api.execute(sortCriteria);
+                NetworkInfo activeNetwork = null;
+                if (cm != null) {
+                    activeNetwork = cm.getActiveNetworkInfo();
+                }
+                boolean isConnected = activeNetwork != null &&
+                        activeNetwork.isConnectedOrConnecting();
+                if (isConnected) {
+                    MovieAPI api = new MovieAPI(key, new FetchMyDataTaskCompleteListener());
+                    api.execute(sortCriteria);
 //            FakeMoviesData.populateFakeData(new MovieDBHelper(this).getWritableDatabase(), FakeMoviesData.getFakeMoviesData(this));
-        } else {
-            showError();
+                } else {
+                    showError();
+                }
+                break;
+            }
+            default: {
+                throw new UnsupportedOperationException("Unsupported operation sortCriteria: " + sortCriteria);
+            }
         }
     }
 
