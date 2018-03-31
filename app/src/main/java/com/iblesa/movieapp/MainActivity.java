@@ -1,10 +1,13 @@
 package com.iblesa.movieapp;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
@@ -18,6 +21,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.iblesa.movieapp.data.MovieContract;
 import com.iblesa.movieapp.model.Movie;
 import com.iblesa.movieapp.model.SortCriteria;
 import com.iblesa.movieapp.network.AsyncTaskCompleteListener;
@@ -82,6 +86,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 } else {
                     showError();
                 }
+                break;
+            }
+            case SortCriteria.FAVORITES: {
+                Cursor query = getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,
+                        null, null, null, MovieContract.MovieEntry.COLUMN_ADDED);
+
                 break;
             }
             default: {
