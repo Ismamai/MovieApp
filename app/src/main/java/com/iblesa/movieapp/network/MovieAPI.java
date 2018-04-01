@@ -102,6 +102,7 @@ public class MovieAPI extends AsyncTaskLoader<List<Movie>> {
 
     @Override
     protected void onStartLoading() {
+        Log.d(Constants.TAG, "onStartLoading forcing load");
         forceLoad();
     }
 }
