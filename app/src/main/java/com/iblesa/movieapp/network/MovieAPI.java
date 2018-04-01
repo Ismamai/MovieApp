@@ -42,6 +42,7 @@ public class MovieAPI extends AsyncTaskLoader<List<Movie>> {
     @Nullable
     private List<Movie> getMoviesFromUrl(Uri uri) {
         try {
+            Log.d(Constants.TAG, "Loading data from uri " + uri);
             String responseFromHttpUrl = getResponseFromHttpUrl(new URL(uri.toString()));
             return MovieParser.parseJSON(responseFromHttpUrl);
         } catch (IOException e) {
