@@ -82,6 +82,7 @@ public class MovieAPI extends AsyncTaskLoader<List<Movie>> {
 
     @Override
     public List<Movie> loadInBackground() {
+        Log.d(Constants.TAG, "Loading in background");
         switch (sortCriteria) {
             case SortCriteria.POPULAR: {
                 Uri uri = Uri.parse(BASE_URL).buildUpon().appendPath(POPULAR_URL).appendQueryParameter(API_KEY_PARAM, apiKey).build();

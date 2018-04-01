@@ -104,8 +104,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         LoaderManager loaderManager = getSupportLoaderManager();
         Loader<Object> loader = loaderManager.getLoader(LOADER_MOVIE_KEY);
         if (loader == null) {
+            Log.d(Constants.TAG, "Initiating Loader");
             loaderManager.initLoader(LOADER_MOVIE_KEY, queryBundle, this);
         } else {
+            Log.d(Constants.TAG, "Restarting Loader");
+
             loaderManager.restartLoader(LOADER_MOVIE_KEY, queryBundle, this);
         }
     }
@@ -176,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     @Override
     public Loader<List<Movie>> onCreateLoader(int id, final Bundle args) {
+        Log.d(Constants.TAG,"On OnCreateLoader ");
         progressBar.setVisibility(View.VISIBLE);
         String sortCriteria = args.getString(LOADER_PARAM_SORT_CRITERIA_PARAM);
         Loader<List<Movie>> resLoader;
