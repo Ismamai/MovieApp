@@ -1,8 +1,9 @@
 package com.iblesa.movieapp.network;
 
+import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.annotation.Nullable;
+import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.iblesa.movieapp.Constants;
@@ -22,42 +23,20 @@ import java.util.Scanner;
 /**
  * This class will deal with network interaction with TheMovieDB api
  */
-public class MovieAPI extends AsyncTask<SortCriteria, Void, List<Movie>> {
+public class MovieAPI extends AsyncTaskLoader<List<Movie>> {
     private static final String BASE_URL = "http://api.themoviedb.org/3/movie/";
     private static final String POPULAR_URL = "popular";
     private static final String RATE_URL = "top_rated";
     private static final String API_KEY_PARAM = "api_key";
 
     private String apiKey;
-    private AsyncTaskCompleteListener<List<Movie>> listener;
+    private final String sortCriteria;
 
 
-    public MovieAPI(String apiKey, AsyncTaskCompleteListener<List<Movie>> listener) {
+    public MovieAPI(Context context, String apiKey, String sortCriteria) {
+        super(context);
         this.apiKey = apiKey;
-        this.listener = listener;
-    }
-
-
-    @Override
-    protected List<Movie> doInBackground(SortCriteria... sortTypes) {
-        if (sortTypes.length < 1) {
-            throw new IllegalArgumentException("Missing SortCriteria parameter");
-        }
-        String sortCriteria = sortTypes[0].getCriteria();
-        switch (sortCriteria) {
-            case SortCriteria.POPULAR: {
-                Uri uri = Uri.parse(BASE_URL).buildUpon().appendPath(POPULAR_URL).appendQueryParameter(API_KEY_PARAM, apiKey).build();
-                return getMoviesFromUrl(uri);
-
-            }
-            case SortCriteria.RATE: {
-                Uri uri = Uri.parse(BASE_URL).buildUpon().appendPath(RATE_URL).appendQueryParameter(API_KEY_PARAM, apiKey).build();
-                return getMoviesFromUrl(uri);
-            }
-            default:
-                throw new IllegalArgumentException("SortCriteria not supported " + sortCriteria);
-
-        }
+        this.sortCriteria = sortCriteria;
     }
 
     @Nullable
@@ -102,13 +81,25 @@ public class MovieAPI extends AsyncTask<SortCriteria, Void, List<Movie>> {
     }
 
     @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        listener.onTaskPreExecute();
+    public List<Movie> loadInBackground() {
+        switch (sortCriteria) {
+            case SortCriteria.POPULAR: {
+                Uri uri = Uri.parse(BASE_URL).buildUpon().appendPath(POPULAR_URL).appendQueryParameter(API_KEY_PARAM, apiKey).build();
+                return getMoviesFromUrl(uri);
+
+            }
+            case SortCriteria.RATE: {
+                Uri uri = Uri.parse(BASE_URL).buildUpon().appendPath(RATE_URL).appendQueryParameter(API_KEY_PARAM, apiKey).build();
+                return getMoviesFromUrl(uri);
+            }
+            default:
+                throw new IllegalArgumentException("SortCriteria not supported " + sortCriteria);
+
+        }
     }
 
     @Override
-    protected void onPostExecute(List<Movie> movies) {
-        listener.onTaskComplete(movies);
+    protected void onStartLoading() {
+        forceLoad();
     }
 }

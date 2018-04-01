@@ -1,13 +1,13 @@
 package com.iblesa.movieapp;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
@@ -24,19 +24,23 @@ import android.widget.TextView;
 import com.iblesa.movieapp.data.MovieContract;
 import com.iblesa.movieapp.model.Movie;
 import com.iblesa.movieapp.model.SortCriteria;
-import com.iblesa.movieapp.network.AsyncTaskCompleteListener;
 import com.iblesa.movieapp.network.MovieAPI;
-import com.iblesa.movieapp.util.FakeMoviesData;
 
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, MoviesAdapter.ListItemClickListener{
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener,
+        MoviesAdapter.ListItemClickListener, LoaderManager.LoaderCallbacks<List<Movie>> {
 
     private RecyclerView recyclerView;
     private TextView errorMessageDisplay;
     private ProgressBar progressBar;
     private MoviesAdapter moviesAdapter;
+    public static final String MOVIE_API_KEY = "API_KEY";
+    private static final int LOADER_MOVIE_KEY = 30;
+    public static final String LOADER_PARAM_SORT_CRITERIA_PARAM = "SORT_CRITERIA";
+    public static final String LOADER_PARAM_API_KEY = "API_KEY";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +55,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         String key = getString(R.string.themoviedb_api_key);
         moviesAdapter = new MoviesAdapter(this);
         recyclerView.setAdapter(moviesAdapter);
-        loadData(key, moviesAdapter);
+        loadData(key);
     }
 
-    private void loadData(String key, MoviesAdapter adapter) {
+    private void loadData(String key) {
 
         SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String criteria = defaultSharedPreferences.getString(getString(R.string.preference_sort_key), getString(R.string.preference_sort_value_popular));
@@ -79,11 +83,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 }
                 boolean isConnected = activeNetwork != null &&
                         activeNetwork.isConnectedOrConnecting();
-                if (isConnected) {
-                    MovieAPI api = new MovieAPI(key, new FetchMyDataTaskCompleteListener());
-                    api.execute(sortCriteria);
-//            FakeMoviesData.populateFakeData(new MovieDBHelper(this).getWritableDatabase(), FakeMoviesData.getFakeMoviesData(this));
-                } else {
+                if (!isConnected) {
                     showError();
                 }
                 break;
@@ -97,6 +97,16 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             default: {
                 throw new UnsupportedOperationException("Unsupported operation sortCriteria: " + sortCriteria);
             }
+        }
+        Bundle queryBundle = new Bundle();
+        queryBundle.putString(LOADER_PARAM_SORT_CRITERIA_PARAM, sortCriteria.getCriteria());
+        queryBundle.putString(LOADER_PARAM_API_KEY, key);
+        LoaderManager loaderManager = getSupportLoaderManager();
+        Loader<Object> loader = loaderManager.getLoader(LOADER_MOVIE_KEY);
+        if (loader == null) {
+            loaderManager.initLoader(LOADER_MOVIE_KEY, queryBundle, this);
+        } else {
+            loaderManager.restartLoader(LOADER_MOVIE_KEY, queryBundle, this);
         }
     }
 
@@ -164,22 +174,38 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         startActivity(intentDetailActivity);
     }
 
-    public class FetchMyDataTaskCompleteListener implements AsyncTaskCompleteListener<List<Movie>> {
-
-        @Override
-        public void onTaskComplete(List<Movie> movies) {
-            progressBar.setVisibility(View.INVISIBLE);
-            if (movies != null) {
-                showData();
-                moviesAdapter.setMovies(movies);
-            } else {
-                showError();
+    @Override
+    public Loader<List<Movie>> onCreateLoader(int id, final Bundle args) {
+        progressBar.setVisibility(View.VISIBLE);
+        String sortCriteria = args.getString(LOADER_PARAM_SORT_CRITERIA_PARAM);
+        Loader<List<Movie>> resLoader;
+        switch (sortCriteria) {
+            case SortCriteria.POPULAR:
+            case SortCriteria.RATE: {
+                resLoader = new MovieAPI(this, args.getString(MOVIE_API_KEY), sortCriteria);
+                break;
+            }
+            default: {
+                throw new UnsupportedOperationException("SortCriteria not supported " + sortCriteria);
             }
         }
+        return resLoader;
+    }
 
-        @Override
-        public void onTaskPreExecute() {
-            progressBar.setVisibility(View.VISIBLE);
+    @Override
+    public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> movies) {
+        progressBar.setVisibility(View.INVISIBLE);
+        if (movies != null) {
+            showData();
+            moviesAdapter.setMovies(movies);
+        } else {
+            showError();
         }
     }
+
+    @Override
+    public void onLoaderReset(Loader<List<Movie>> loader) {
+        Log.d(Constants.TAG, "Loader reset " + loader);
+    }
+
 }
