@@ -182,6 +182,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         Log.d(Constants.TAG,"On OnCreateLoader ");
         progressBar.setVisibility(View.VISIBLE);
         String sortCriteria = args.getString(LOADER_PARAM_SORT_CRITERIA_PARAM);
+        if (sortCriteria == null) {
+            throw new IllegalArgumentException("Missing parameter " + LOADER_PARAM_SORT_CRITERIA_PARAM);
+        }
         Loader<List<Movie>> resLoader;
         switch (sortCriteria) {
             case SortCriteria.POPULAR:
@@ -212,4 +215,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         Log.d(Constants.TAG, "Loader reset " + loader);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(Constants.TAG, "onResume, callling to reload data");
+        loadData(getString(R.string.themoviedb_api_key));
+    }
 }
