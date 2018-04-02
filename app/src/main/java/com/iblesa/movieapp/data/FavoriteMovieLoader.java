@@ -27,6 +27,7 @@ public class FavoriteMovieLoader extends android.support.v4.content.AsyncTaskLoa
             while (cursor.moveToNext()) {
                 retMovies.add(MovieUtils.getMovie(cursor));
             }
+            cursor.close();
         }
         return retMovies;
     }
