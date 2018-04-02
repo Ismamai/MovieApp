@@ -81,7 +81,18 @@ public class FavoriteMovieContentProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        return null;
+        int match = sUriMatcher.match(uri);
+        switch (match) {
+            case FAVORITES: {
+                return "vnd.android.cursor.dir" + "/" + MovieContract.AUTHORITY + "/" + MovieContract.PATH_FAVORITES;
+            }
+            case FAVORITES_WITH_ID: {
+                return "vnd.android.cursor.item" + "/" + MovieContract.AUTHORITY + "/" + MovieContract.PATH_FAVORITES;
+            }
+            default:
+                throw new UnsupportedOperationException("Unknown Uri " + uri);
+
+        }
     }
 
     @Nullable
