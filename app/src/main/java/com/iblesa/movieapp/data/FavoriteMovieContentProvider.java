@@ -63,7 +63,7 @@ public class FavoriteMovieContentProvider extends ContentProvider {
                 break;
             }
             default:
-                throw new UnsupportedOperationException("Unkown Uri " + uri);
+                throw new UnsupportedOperationException("Unknown Uri " + uri);
 
         }
         return retCursor;
@@ -104,7 +104,7 @@ public class FavoriteMovieContentProvider extends ContentProvider {
                 break;
             }
             default:
-                throw new UnsupportedOperationException("Unkown Uri " + uri);
+                throw new UnsupportedOperationException("Unknown Uri " + uri);
 
         }
         //Notify ContentResolver that URI has been modified
@@ -117,8 +117,22 @@ public class FavoriteMovieContentProvider extends ContentProvider {
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         int match = sUriMatcher.match(uri);
-
-        return 0;
+        int resDelete;
+        switch (match) {
+            case FAVORITES_WITH_ID: {
+                //URI: content://<authority>/movies/#
+                // We have to extract the id from the uri
+                String id = uri.getPathSegments().get(1);
+                String mWhere = "_id=?";
+                String[] mWhereArgs = new String[]{id};
+                resDelete = db.delete(TABLE_NAME, mWhere, mWhereArgs);
+                break;
+            }
+            default:
+                throw new UnsupportedOperationException("Unknown Uri " + uri);
+        }
+        getContentResolver().notifyChange(uri, null);
+        return resDelete;
     }
 
     @Override
