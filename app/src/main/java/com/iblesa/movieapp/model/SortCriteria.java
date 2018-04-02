@@ -11,9 +11,9 @@ public class SortCriteria {
     //Constants
     public static final String POPULAR = "popular";
     public static final String RATE = "rate";
-    public static final String FAVORITES = "FAVORITES";
+    public static final String FAVORITES = "favorites";
 
-    private static final List<String> ALLOWED_CRITERIAS = Arrays.asList(POPULAR, RATE);
+    private static final List<String> ALLOWED_CRITERIAS = Arrays.asList(POPULAR, RATE, FAVORITES);
 
     private final String criteria;
 
