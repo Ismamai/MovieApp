@@ -1,8 +1,10 @@
 package com.iblesa.movieapp.data;
 
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -46,13 +48,18 @@ public class FavoriteMovieContentProvider extends ContentProvider {
                 retCursor = db.query(TABLE_NAME,
                         projection, selection, selectionArgs, null, null, sortOrder);
                 //Informing the cursor what uri created it
-                retCursor.setNotificationUri(getContext().getContentResolver(),uri);
+                retCursor.setNotificationUri(getContentResolver(), uri);
                 break;
             }
             case FAVORITES_WITH_ID: {
+                //URI: content://<authority>/movies/#
+                // We have to extract the id from the uri
+                String id = uri.getPathSegments().get(1);
+                String mSelection = "_id=?";
+                String[] mSelectionArg = new String[]{id};
                 retCursor = db.query(TABLE_NAME,
-                        projection, selection, selectionArgs,null, null, null);
-                retCursor.setNotificationUri(getContext().getContentResolver(),uri);
+                        projection, mSelection, mSelectionArg, null, null, sortOrder);
+                retCursor.setNotificationUri(getContentResolver(), uri);
                 break;
             }
             default:
@@ -60,6 +67,15 @@ public class FavoriteMovieContentProvider extends ContentProvider {
 
         }
         return retCursor;
+    }
+
+    private ContentResolver getContentResolver() {
+        Context context = getContext();
+        if (context != null) {
+            return context.getContentResolver();
+        } else {
+            throw new IllegalStateException(("getContext is null"));
+        }
     }
 
     @Nullable
@@ -92,12 +108,16 @@ public class FavoriteMovieContentProvider extends ContentProvider {
 
         }
         //Notify ContentResolver that URI has been modified
-        getContext().getContentResolver().notifyChange(uri, null);
+        getContentResolver().notifyChange(uri, null);
         return retUri;
     }
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        int match = sUriMatcher.match(uri);
+
         return 0;
     }
 
