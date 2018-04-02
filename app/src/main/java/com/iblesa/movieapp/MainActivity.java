@@ -3,7 +3,6 @@ package com.iblesa.movieapp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.LoaderManager;
@@ -21,7 +20,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.iblesa.movieapp.data.MovieContract;
+import com.iblesa.movieapp.data.FavoriteMovieLoader;
 import com.iblesa.movieapp.model.Movie;
 import com.iblesa.movieapp.model.SortCriteria;
 import com.iblesa.movieapp.network.MovieAPI;
@@ -89,8 +88,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 break;
             }
             case SortCriteria.FAVORITES: {
-                Cursor query = getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,
-                        null, null, null, MovieContract.MovieEntry.COLUMN_ADDED);
 
                 break;
             }
@@ -192,6 +189,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 resLoader = new MovieAPI(this, args.getString(MOVIE_API_KEY), sortCriteria);
                 break;
             }
+            case SortCriteria.FAVORITES: {
+                resLoader = new FavoriteMovieLoader(this);
+                break;
+            }
             default: {
                 throw new UnsupportedOperationException("SortCriteria not supported " + sortCriteria);
             }
@@ -206,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             showData();
             moviesAdapter.setMovies(movies);
         } else {
+            Log.d(Constants.TAG, "There are no movies to show");
             showError();
         }
     }
@@ -218,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(Constants.TAG, "onResume, callling to reload data");
-        loadData(getString(R.string.themoviedb_api_key));
+        Log.d(Constants.TAG, "onResume, calling to reload data");
+//        loadData(getString(R.string.themoviedb_api_key));
     }
 }
