@@ -35,8 +35,8 @@
         </activity>
 
         <provider
-            android:authorities="com.iblesa.movieap"
-            android:name=".data.FavoriteMovieContentProvider"
+            android:authorities="com.iblesa.movieapp"
+            android:name="com.iblesa.movieapp.data.FavoriteMovieContentProvider"
             android:exported="false"/>
     </application>
 
