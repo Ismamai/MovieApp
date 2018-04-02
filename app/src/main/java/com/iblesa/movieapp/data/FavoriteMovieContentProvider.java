@@ -49,10 +49,12 @@ public class FavoriteMovieContentProvider extends ContentProvider {
                 retCursor.setNotificationUri(getContext().getContentResolver(),uri);
                 break;
             }
-//            case FAVORITES_WITH_ID: {
-//                retCursor = null;
-//                break;
-//            }
+            case FAVORITES_WITH_ID: {
+                retCursor = db.query(TABLE_NAME,
+                        projection, selection, selectionArgs,null, null, null);
+                retCursor.setNotificationUri(getContext().getContentResolver(),uri);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unkown Uri " + uri);
 
