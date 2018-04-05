@@ -221,6 +221,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     protected void onResume() {
         super.onResume();
         Log.d(Constants.TAG, "onResume, calling to reload data");
-//        loadData(getString(R.string.themoviedb_api_key));
+        loadData(getString(R.string.themoviedb_api_key));
     }
 }
