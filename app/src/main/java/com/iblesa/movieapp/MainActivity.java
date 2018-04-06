@@ -51,10 +51,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         progressBar = findViewById(R.id.pb_loading_indicator);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
-        String key = getString(R.string.themoviedb_api_key);
+//        String key = getString(R.string.themoviedb_api_key);
         moviesAdapter = new MoviesAdapter(this);
         recyclerView.setAdapter(moviesAdapter);
-        loadData(key);
+//        loadData(key);
     }
 
     private void loadData(String key) {
