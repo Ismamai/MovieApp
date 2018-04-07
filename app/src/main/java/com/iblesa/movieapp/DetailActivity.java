@@ -11,12 +11,10 @@ import android.util.Log;
 import com.iblesa.movieapp.databinding.ActivityDetailBinding;
 import com.iblesa.movieapp.model.Movie;
 import com.iblesa.movieapp.model.MovieReview;
-import com.iblesa.movieapp.model.MovieVideos;
+import com.iblesa.movieapp.model.MovieVideo;
 import com.iblesa.movieapp.network.MovieReviewAPI;
-import com.iblesa.movieapp.util.MovieReviewParser;
+import com.iblesa.movieapp.network.MovieVideoAPI;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
 
 import java.util.List;
 import java.util.Locale;
@@ -57,22 +55,25 @@ public class DetailActivity extends AppCompatActivity {
         Log.d(Constants.TAG, "Received reviews " + data);
     }
 
-    private LoaderManager.LoaderCallbacks<List<MovieVideos>> movieVideosLoader = new LoaderManager.LoaderCallbacks<List<MovieVideos>>() {
+    private LoaderManager.LoaderCallbacks<List<MovieVideo>> movieVideosLoader = new LoaderManager.LoaderCallbacks<List<MovieVideo>>() {
         @Override
-        public Loader<List<MovieVideos>> onCreateLoader(int id, Bundle args) {
-            Log.d(Constants.TAG, "Trying to create loader for MovieVideos. loader id = "
+        public Loader<List<MovieVideo>> onCreateLoader(int id, Bundle args) {
+            Log.d(Constants.TAG, "Trying to create loader for MovieVideo. loader id = "
                     + id + " == LOADER_MOVIE_VIDEOS_KEY (" + Constants.LOADER_MOVIE_VIDEOS_KEY
                     + ") = " + (id == Constants.LOADER_MOVIE_VIDEOS_KEY));
-            return null;
+
+            int movieId = args.getInt(LOADER_MOVIE_REVIEW_PARAM_MOVIE_ID);
+            String apiKey = args.getString(LOADER_MOVIE_PARAM_API_KEY);
+            return new MovieVideoAPI(getApplicationContext(), apiKey, movieId );
         }
 
         @Override
-        public void onLoadFinished(Loader<List<MovieVideos>> loader, List<MovieVideos> data) {
+        public void onLoadFinished(Loader<List<MovieVideo>> loader, List<MovieVideo> data) {
 
         }
 
         @Override
-        public void onLoaderReset(Loader<List<MovieVideos>> loader) {
+        public void onLoaderReset(Loader<List<MovieVideo>> loader) {
 
         }
     };
