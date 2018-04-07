@@ -27,6 +27,10 @@ import com.iblesa.movieapp.network.MovieAPI;
 
 import java.util.List;
 
+import static com.iblesa.movieapp.Constants.LOADER_MOVIE_KEY;
+import static com.iblesa.movieapp.Constants.LOADER_MOVIE_PARAM_API_KEY;
+import static com.iblesa.movieapp.Constants.LOADER_MOVIE_PARAM_SORT_CRITERIA;
+
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener,
         MoviesAdapter.ListItemClickListener, LoaderManager.LoaderCallbacks<List<Movie>> {
@@ -36,9 +40,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private ProgressBar progressBar;
     private MoviesAdapter moviesAdapter;
     public static final String MOVIE_API_KEY = "API_KEY";
-    private static final int LOADER_MOVIE_KEY = 30;
-    public static final String LOADER_PARAM_SORT_CRITERIA_PARAM = "SORT_CRITERIA";
-    public static final String LOADER_PARAM_API_KEY = "API_KEY";
 
 
     @Override
@@ -96,8 +97,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             }
         }
         Bundle queryBundle = new Bundle();
-        queryBundle.putString(LOADER_PARAM_SORT_CRITERIA_PARAM, sortCriteria.getCriteria());
-        queryBundle.putString(LOADER_PARAM_API_KEY, key);
+        queryBundle.putString(LOADER_MOVIE_PARAM_SORT_CRITERIA, sortCriteria.getCriteria());
+        queryBundle.putString(LOADER_MOVIE_PARAM_API_KEY, key);
         LoaderManager loaderManager = getSupportLoaderManager();
         Loader<Object> loader = loaderManager.getLoader(LOADER_MOVIE_KEY);
         if (loader == null) {
@@ -178,9 +179,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public Loader<List<Movie>> onCreateLoader(int id, final Bundle args) {
         Log.d(Constants.TAG,"On OnCreateLoader ");
         progressBar.setVisibility(View.VISIBLE);
-        String sortCriteria = args.getString(LOADER_PARAM_SORT_CRITERIA_PARAM);
+        String sortCriteria = args.getString(LOADER_MOVIE_PARAM_SORT_CRITERIA);
         if (sortCriteria == null) {
-            throw new IllegalArgumentException("Missing parameter " + LOADER_PARAM_SORT_CRITERIA_PARAM);
+            throw new IllegalArgumentException("Missing parameter " + LOADER_MOVIE_PARAM_SORT_CRITERIA);
         }
         Loader<List<Movie>> resLoader;
         switch (sortCriteria) {
