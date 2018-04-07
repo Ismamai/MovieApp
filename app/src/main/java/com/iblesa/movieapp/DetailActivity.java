@@ -2,19 +2,78 @@ package com.iblesa.movieapp;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.iblesa.movieapp.databinding.ActivityDetailBinding;
 import com.iblesa.movieapp.model.Movie;
+import com.iblesa.movieapp.model.MovieReview;
+import com.iblesa.movieapp.model.MovieVideos;
+import com.iblesa.movieapp.network.MovieReviewAPI;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
 import java.util.Locale;
+
+import static com.iblesa.movieapp.Constants.LOADER_MOVIE_PARAM_API_KEY;
+import static com.iblesa.movieapp.Constants.LOADER_MOVIE_REVIEW_PARAM_MOVIE_ID;
+import static com.iblesa.movieapp.Constants.LOADER_MOVIE_REVIEW_KEY;
 
 public class DetailActivity extends AppCompatActivity {
 
     ActivityDetailBinding activityDetailBinding;
+
+    private LoaderManager.LoaderCallbacks<List<MovieReview>> movieReviewLoader = new LoaderManager.LoaderCallbacks<List<MovieReview>>() {
+        @Override
+        public Loader<List<MovieReview>> onCreateLoader(int id, Bundle args) {
+            Log.d(Constants.TAG, "Trying to create loader for MovieReviews. loader id = "
+                    + id + " == LOADER_MOVIE_REVIEW_KEY (" + Constants.LOADER_MOVIE_REVIEW_KEY
+                    + ") = " + (id == Constants.LOADER_MOVIE_REVIEW_KEY));
+
+            int movieId = args.getInt(LOADER_MOVIE_REVIEW_PARAM_MOVIE_ID);
+            String apiKey = args.getString(LOADER_MOVIE_PARAM_API_KEY);
+            return new MovieReviewAPI(getApplicationContext(), apiKey, movieId );
+        }
+
+        @Override
+        public void onLoadFinished(Loader<List<MovieReview>> loader, List<MovieReview> data) {
+            populateReviews(data);
+
+        }
+
+        @Override
+        public void onLoaderReset(Loader<List<MovieReview>> loader) {
+
+        }
+    };
+
+    private void populateReviews(List<MovieReview> data) {
+        Log.d(Constants.TAG, "Received reviews " + data);
+    }
+
+    private LoaderManager.LoaderCallbacks<List<MovieVideos>> movieVideosLoader = new LoaderManager.LoaderCallbacks<List<MovieVideos>>() {
+        @Override
+        public Loader<List<MovieVideos>> onCreateLoader(int id, Bundle args) {
+            Log.d(Constants.TAG, "Trying to create loader for MovieVideos. loader id = "
+                    + id + " == LOADER_MOVIE_VIDEOS_KEY (" + Constants.LOADER_MOVIE_VIDEOS_KEY
+                    + ") = " + (id == Constants.LOADER_MOVIE_VIDEOS_KEY));
+            return null;
+        }
+
+        @Override
+        public void onLoadFinished(Loader<List<MovieVideos>> loader, List<MovieVideos> data) {
+
+        }
+
+        @Override
+        public void onLoaderReset(Loader<List<MovieVideos>> loader) {
+
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +88,30 @@ public class DetailActivity extends AppCompatActivity {
                 Log.d(Constants.TAG, "Movie passed to activity " + movie);
                 activityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
                 populateUI(movie);
+                int id = movie.getId();
+                loadExtendedData(id);
+
             }
         }
+    }
+
+    private void loadExtendedData(int id) {
+        Log.d(Constants.TAG, "Loading extended data for movie with id " + id);
+        Bundle queryBundle = new Bundle();
+        queryBundle.putInt(LOADER_MOVIE_REVIEW_PARAM_MOVIE_ID, id);
+        queryBundle.putString(LOADER_MOVIE_PARAM_API_KEY, getString(R.string.themoviedb_api_key));
+
+        LoaderManager loaderManager = getSupportLoaderManager();
+        Loader loaderReviews = loaderManager.getLoader(LOADER_MOVIE_REVIEW_KEY);
+        if (loaderReviews == null) {
+            Log.d(Constants.TAG, "Initiating Loader");
+            loaderManager.initLoader(LOADER_MOVIE_REVIEW_KEY, queryBundle, movieReviewLoader);
+        } else {
+            Log.d(Constants.TAG, "Restarting Loader");
+
+            loaderManager.restartLoader(LOADER_MOVIE_REVIEW_KEY, queryBundle, movieReviewLoader);
+        }
+
     }
 
     private void populateUI(Movie movie) {
