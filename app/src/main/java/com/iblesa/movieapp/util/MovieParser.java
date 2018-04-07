@@ -35,7 +35,7 @@ public class MovieParser {
     private static final String TOTAL_PAGES = "total_pages";
 
 
-    public static List<Movie> parseJSON(String input) throws JSONException {
+    public static List<Movie> parseMovieJSON(String input) throws JSONException {
         List<Movie> movies = new ArrayList<>();
 
         JSONObject jsonObject = new JSONObject(input);

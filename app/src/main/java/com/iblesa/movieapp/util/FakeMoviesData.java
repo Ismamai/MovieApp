@@ -4,13 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.iblesa.movieapp.Constants;
 import com.iblesa.movieapp.R;
 import com.iblesa.movieapp.data.MovieContract;
-import com.iblesa.movieapp.data.MovieDBHelper;
 import com.iblesa.movieapp.data.MovieUtils;
 import com.iblesa.movieapp.model.Movie;
 
@@ -28,7 +26,7 @@ public class FakeMoviesData {
     public static List<Movie> getFakeMoviesData(Context context) {
         List<Movie> movies = new ArrayList<>();
         try {
-            movies = MovieParser.parseJSON(context.getString(R.string.movies_result));
+            movies = MovieParser.parseMovieJSON(context.getString(R.string.movies_result));
         } catch (JSONException e) {
             e.printStackTrace();
         }
