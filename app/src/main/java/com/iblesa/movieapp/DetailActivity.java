@@ -13,7 +13,10 @@ import com.iblesa.movieapp.model.Movie;
 import com.iblesa.movieapp.model.MovieReview;
 import com.iblesa.movieapp.model.MovieVideos;
 import com.iblesa.movieapp.network.MovieReviewAPI;
+import com.iblesa.movieapp.util.MovieReviewParser;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
 
 import java.util.List;
 import java.util.Locale;
@@ -88,12 +91,24 @@ public class DetailActivity extends AppCompatActivity {
                 Log.d(Constants.TAG, "Movie passed to activity " + movie);
                 activityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
                 populateUI(movie);
+//                testParsingMovieReviews();
                 int id = movie.getId();
                 loadExtendedData(id);
 
             }
         }
     }
+
+//    private void testParsingMovieReviews() {
+//        List<MovieReview> movieReviews = null;
+//        try {
+//            movieReviews = MovieReviewParser.parseMovieReviewJSON(getString(R.string.movie_reviews_sample));
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            Log.e(Constants.TAG, "Error parsing data ", e);
+//        }
+//        Log.d(Constants.TAG, "Reviews is " + movieReviews);
+//    }
 
     private void loadExtendedData(int id) {
         Log.d(Constants.TAG, "Loading extended data for movie with id " + id);
