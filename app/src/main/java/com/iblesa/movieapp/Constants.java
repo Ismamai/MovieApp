@@ -9,9 +9,11 @@ public class Constants {
     public static final String MOVIES = "movies_list";
     public static final String MOVIE_DETAIL = "movie_detail";
 
+    static final String MOVIE_API_KEY = "API_KEY";
+
     // LoaderMovie constants
     static final int LOADER_MOVIE_KEY = 30;
     static final String LOADER_MOVIE_PARAM_SORT_CRITERIA = "SORT_CRITERIA";
-    static final String LOADER_MOVIE_PARAM_API_KEY = "API_KEY";
+    static final String LOADER_MOVIE_PARAM_API_KEY = MOVIE_API_KEY;
 
 }

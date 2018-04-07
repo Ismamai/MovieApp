@@ -30,6 +30,7 @@ import java.util.List;
 import static com.iblesa.movieapp.Constants.LOADER_MOVIE_KEY;
 import static com.iblesa.movieapp.Constants.LOADER_MOVIE_PARAM_API_KEY;
 import static com.iblesa.movieapp.Constants.LOADER_MOVIE_PARAM_SORT_CRITERIA;
+import static com.iblesa.movieapp.Constants.MOVIE_API_KEY;
 
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener,
@@ -39,8 +40,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private TextView errorMessageDisplay;
     private ProgressBar progressBar;
     private MoviesAdapter moviesAdapter;
-    public static final String MOVIE_API_KEY = "API_KEY";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
