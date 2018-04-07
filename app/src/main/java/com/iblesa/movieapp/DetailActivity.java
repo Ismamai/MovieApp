@@ -22,6 +22,7 @@ import java.util.Locale;
 import static com.iblesa.movieapp.Constants.LOADER_MOVIE_PARAM_API_KEY;
 import static com.iblesa.movieapp.Constants.LOADER_MOVIE_REVIEW_PARAM_MOVIE_ID;
 import static com.iblesa.movieapp.Constants.LOADER_MOVIE_REVIEW_KEY;
+import static com.iblesa.movieapp.Constants.LOADER_MOVIE_VIDEOS_KEY;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -51,9 +52,6 @@ public class DetailActivity extends AppCompatActivity {
         }
     };
 
-    private void populateReviews(List<MovieReview> data) {
-        Log.d(Constants.TAG, "Received reviews " + data);
-    }
 
     private LoaderManager.LoaderCallbacks<List<MovieVideo>> movieVideosLoader = new LoaderManager.LoaderCallbacks<List<MovieVideo>>() {
         @Override
@@ -69,7 +67,7 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         public void onLoadFinished(Loader<List<MovieVideo>> loader, List<MovieVideo> data) {
-
+            populateVideos(data);
         }
 
         @Override
@@ -132,12 +130,19 @@ public class DetailActivity extends AppCompatActivity {
         LoaderManager loaderManager = getSupportLoaderManager();
         Loader loaderReviews = loaderManager.getLoader(LOADER_MOVIE_REVIEW_KEY);
         if (loaderReviews == null) {
-            Log.d(Constants.TAG, "Initiating Loader");
+            Log.d(Constants.TAG, "Initiating MovieReviews Loader");
             loaderManager.initLoader(LOADER_MOVIE_REVIEW_KEY, queryBundle, movieReviewLoader);
         } else {
-            Log.d(Constants.TAG, "Restarting Loader");
-
+            Log.d(Constants.TAG, "Restarting MovieReviews Loader");
             loaderManager.restartLoader(LOADER_MOVIE_REVIEW_KEY, queryBundle, movieReviewLoader);
+        }
+        Loader loaderVideos = loaderManager.getLoader(LOADER_MOVIE_VIDEOS_KEY);
+        if (loaderVideos == null) {
+            Log.d(Constants.TAG, "Initiating MovieVideos Loader");
+            loaderManager.initLoader(LOADER_MOVIE_VIDEOS_KEY, queryBundle, movieVideosLoader);
+        } else {
+            Log.d(Constants.TAG, "Restarting MovieVideos Loader");
+            loaderManager.restartLoader(LOADER_MOVIE_REVIEW_KEY, queryBundle, movieVideosLoader);
         }
 
     }
@@ -153,5 +158,13 @@ public class DetailActivity extends AppCompatActivity {
         activityDetailBinding.tvReleaseDate.setText(movie.getReleaseDate());
         activityDetailBinding.tvVoteAverage.setText(String.format(Locale.getDefault(), "%.2f", movie.getVoteAverage()));
         activityDetailBinding.tvSynopsis.setText(movie.getOverview());
+    }
+
+    private void populateReviews(List<MovieReview> data) {
+        Log.d(Constants.TAG, "Received reviews " + data);
+    }
+
+    private void populateVideos(List<MovieVideo> data) {
+        Log.d(Constants.TAG, "Received videos " + data);
     }
 }
