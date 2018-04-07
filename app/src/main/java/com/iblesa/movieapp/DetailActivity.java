@@ -93,6 +93,7 @@ public class DetailActivity extends AppCompatActivity {
                 activityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
                 populateUI(movie);
 //                testParsingMovieReviews();
+//                testParsingMovieVideos();
                 int id = movie.getId();
                 loadExtendedData(id);
 
@@ -109,6 +110,17 @@ public class DetailActivity extends AppCompatActivity {
 //            Log.e(Constants.TAG, "Error parsing data ", e);
 //        }
 //        Log.d(Constants.TAG, "Reviews is " + movieReviews);
+//    }
+
+//        private void testParsingMovieVideos() {
+//        List<MovieVideo> movieReviews = null;
+//        try {
+//            movieReviews = MovieVideoParser.parseMovieVideoJSON(getString(R.string.movie_videos_sample));
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            Log.e(Constants.TAG, "Error parsing data ", e);
+//        }
+//        Log.d(Constants.TAG, "Videos is " + movieReviews);
 //    }
 
     private void loadExtendedData(int id) {
