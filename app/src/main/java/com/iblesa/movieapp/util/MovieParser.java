@@ -58,59 +58,18 @@ public class MovieParser {
 
     private static Movie parseMovie(JSONObject movie) throws JSONException {
         Movie.Builder builder = new Movie.Builder();
-        builder.id(getCompulsoryIntProperty(ID, movie));
-        builder.title(getStringProperty(TITLE, movie, true));
-        builder.overview(getStringProperty(OVERVIEW, movie, true));
-        builder.releaseDate(getStringProperty(RELEASE_DATE, movie, true));
-        builder.voteAverage(getCompulsoryFloatProperty(VOTE_AVERAGE, movie));
-        builder.popularity(getCompulsoryFloatProperty(POPULARITY, movie));
-        builder.posterPath(getStringProperty(POSTER_PATH, movie, false));
-        builder.backdropPath(getStringProperty(BACKDROP_PATH, movie, false));
-        builder.video(getCompulsoryBooleanProperty(VIDEO, movie));
+        builder.id(Parser.getCompulsoryIntProperty(ID, movie));
+        builder.title(Parser.getStringProperty(TITLE, movie, true));
+        builder.overview(Parser.getStringProperty(OVERVIEW, movie, true));
+        builder.releaseDate(Parser.getStringProperty(RELEASE_DATE, movie, true));
+        builder.voteAverage(Parser.getCompulsoryFloatProperty(VOTE_AVERAGE, movie));
+        builder.popularity(Parser.getCompulsoryFloatProperty(POPULARITY, movie));
+        builder.posterPath(Parser.getStringProperty(POSTER_PATH, movie, false));
+        builder.backdropPath(Parser.getStringProperty(BACKDROP_PATH, movie, false));
+        builder.video(Parser.getCompulsoryBooleanProperty(VIDEO, movie));
         return builder.build();
 
     }
 
-    private static String getStringProperty(String propertyName, JSONObject jsonObject, boolean compulsory) throws JSONException {
-        if (jsonObject.has(propertyName)) {
-            return jsonObject.getString(propertyName);
-        } else if (compulsory) {
-
-            String errorMessage = "JSONObject does not have compulsory property, propertyName = " + propertyName + ", jsonObject = " + jsonObject.toString();
-            Log.e(Constants.TAG, errorMessage);
-            throw new JSONException(errorMessage);
-        }
-        return null;
-    }
-
-    private static int getCompulsoryIntProperty(String propertyName, JSONObject jsonObject) throws JSONException {
-        if (jsonObject.has(propertyName)) {
-            return jsonObject.getInt(propertyName);
-        }
-
-        String errorMessage = "JSONObject does not have compulsory property, propertyName = " + propertyName + ", jsonObject = " + jsonObject.toString();
-        Log.e(Constants.TAG, errorMessage);
-        throw new JSONException(errorMessage);
-    }
-
-    private static float getCompulsoryFloatProperty(String propertyName, JSONObject jsonObject) throws JSONException {
-        if (jsonObject.has(propertyName)) {
-            return (float) jsonObject.getDouble(propertyName);
-        }
-
-        String errorMessage = "JSONObject does not have compulsory property, propertyName = " + propertyName + ", jsonObject = " + jsonObject.toString();
-        Log.e(Constants.TAG, errorMessage);
-        throw new JSONException(errorMessage);
-    }
-
-    private static boolean getCompulsoryBooleanProperty(String propertyName, JSONObject jsonObject) throws JSONException {
-        if (jsonObject.has(propertyName)) {
-            return jsonObject.getBoolean(propertyName);
-        }
-
-        String errorMessage = "JSONObject does not have compulsory property, propertyName = " + propertyName + ", jsonObject = " + jsonObject.toString();
-        Log.e(Constants.TAG, errorMessage);
-        throw new JSONException(errorMessage);
-    }
 
 }
