@@ -18,9 +18,6 @@ import java.util.List;
 
 public class MovieReviewParser {
     // Movie fields
-    private static final String POSTER_PATH = "poster_path";
-    private static final String OVERVIEW = "overview";
-    private static final String RELEASE_DATE = "release_date";
     private static final String ID = "id";
     private static final String AUTHOR = "author";
     private static final String CONTENT = "content";
