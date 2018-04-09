@@ -8,9 +8,6 @@ import android.util.Log;
 import com.iblesa.movieapp.Constants;
 import com.iblesa.movieapp.model.Movie;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SingleFavoriteMovieLoader extends android.support.v4.content.AsyncTaskLoader<Movie> {
 
     private final int movieId;
