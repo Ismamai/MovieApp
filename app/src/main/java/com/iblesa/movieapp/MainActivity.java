@@ -28,8 +28,8 @@ import com.iblesa.movieapp.network.MovieAPI;
 import java.util.List;
 
 import static com.iblesa.movieapp.Constants.LOADER_MOVIE_KEY;
-import static com.iblesa.movieapp.Constants.LOADER_MOVIE_PARAM_API_KEY;
-import static com.iblesa.movieapp.Constants.LOADER_MOVIE_PARAM_SORT_CRITERIA;
+import static com.iblesa.movieapp.Constants.LOADER_PARAM_MOVIE_API_KEY;
+import static com.iblesa.movieapp.Constants.LOADER_PARAM_MOVIE_SORT_CRITERIA;
 import static com.iblesa.movieapp.Constants.MOVIE_API_KEY;
 
 
@@ -96,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             }
         }
         Bundle queryBundle = new Bundle();
-        queryBundle.putString(LOADER_MOVIE_PARAM_SORT_CRITERIA, sortCriteria.getCriteria());
-        queryBundle.putString(LOADER_MOVIE_PARAM_API_KEY, key);
+        queryBundle.putString(LOADER_PARAM_MOVIE_SORT_CRITERIA, sortCriteria.getCriteria());
+        queryBundle.putString(LOADER_PARAM_MOVIE_API_KEY, key);
         LoaderManager loaderManager = getSupportLoaderManager();
         Loader<Object> loader = loaderManager.getLoader(LOADER_MOVIE_KEY);
         if (loader == null) {
@@ -178,9 +178,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public Loader<List<Movie>> onCreateLoader(int id, final Bundle args) {
         Log.d(Constants.TAG,"On OnCreateLoader ");
         progressBar.setVisibility(View.VISIBLE);
-        String sortCriteria = args.getString(LOADER_MOVIE_PARAM_SORT_CRITERIA);
+        String sortCriteria = args.getString(LOADER_PARAM_MOVIE_SORT_CRITERIA);
         if (sortCriteria == null) {
-            throw new IllegalArgumentException("Missing parameter " + LOADER_MOVIE_PARAM_SORT_CRITERIA);
+            throw new IllegalArgumentException("Missing parameter " + LOADER_PARAM_MOVIE_SORT_CRITERIA);
         }
         Loader<List<Movie>> resLoader;
         switch (sortCriteria) {

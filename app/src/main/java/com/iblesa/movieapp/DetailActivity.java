@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.iblesa.movieapp.data.SingleFavoriteMovieLoader;
 import com.iblesa.movieapp.databinding.ActivityDetailBinding;
 import com.iblesa.movieapp.model.Movie;
 import com.iblesa.movieapp.model.MovieReview;
@@ -19,10 +20,11 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Locale;
 
-import static com.iblesa.movieapp.Constants.LOADER_MOVIE_PARAM_API_KEY;
-import static com.iblesa.movieapp.Constants.LOADER_MOVIE_REVIEW_PARAM_MOVIE_ID;
+import static com.iblesa.movieapp.Constants.LOADER_PARAM_MOVIE_API_KEY;
 import static com.iblesa.movieapp.Constants.LOADER_MOVIE_REVIEW_KEY;
 import static com.iblesa.movieapp.Constants.LOADER_MOVIE_VIDEOS_KEY;
+import static com.iblesa.movieapp.Constants.LOADER_PARAM_MOVIE_ID;
+import static com.iblesa.movieapp.Constants.LOADER_SINGLE_FAVORITE_MOVIE;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -35,8 +37,8 @@ public class DetailActivity extends AppCompatActivity {
                     + id + " == LOADER_MOVIE_REVIEW_KEY (" + Constants.LOADER_MOVIE_REVIEW_KEY
                     + ") = " + (id == Constants.LOADER_MOVIE_REVIEW_KEY));
 
-            int movieId = args.getInt(LOADER_MOVIE_REVIEW_PARAM_MOVIE_ID);
-            String apiKey = args.getString(LOADER_MOVIE_PARAM_API_KEY);
+            int movieId = args.getInt(LOADER_PARAM_MOVIE_ID);
+            String apiKey = args.getString(LOADER_PARAM_MOVIE_API_KEY);
             return new MovieReviewAPI(getApplicationContext(), apiKey, movieId );
         }
 
@@ -60,8 +62,8 @@ public class DetailActivity extends AppCompatActivity {
                     + id + " == LOADER_MOVIE_VIDEOS_KEY (" + Constants.LOADER_MOVIE_VIDEOS_KEY
                     + ") = " + (id == Constants.LOADER_MOVIE_VIDEOS_KEY));
 
-            int movieId = args.getInt(LOADER_MOVIE_REVIEW_PARAM_MOVIE_ID);
-            String apiKey = args.getString(LOADER_MOVIE_PARAM_API_KEY);
+            int movieId = args.getInt(LOADER_PARAM_MOVIE_ID);
+            String apiKey = args.getString(LOADER_PARAM_MOVIE_API_KEY);
             return new MovieVideoAPI(getApplicationContext(), apiKey, movieId );
         }
 
@@ -76,6 +78,29 @@ public class DetailActivity extends AppCompatActivity {
         }
     };
 
+    private LoaderManager.LoaderCallbacks<Movie> movieFavoriteLoader = new LoaderManager.LoaderCallbacks<Movie>() {
+        @Override
+        public Loader<Movie> onCreateLoader(int id, Bundle args) {
+            Log.d(Constants.TAG, "Trying to create loader for MovieReviews. loader id = "
+                    + id + " == LOADER_MOVIE_REVIEW_KEY (" + Constants.LOADER_MOVIE_REVIEW_KEY
+                    + ") = " + (id == Constants.LOADER_MOVIE_REVIEW_KEY));
+
+            int movieId = args.getInt(LOADER_PARAM_MOVIE_ID);
+            String apiKey = args.getString(LOADER_PARAM_MOVIE_API_KEY);
+            return new SingleFavoriteMovieLoader(getApplicationContext(), movieId);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Movie> loader, Movie data) {
+            populateFavorite(data);
+
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Movie> loader) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,8 +149,8 @@ public class DetailActivity extends AppCompatActivity {
     private void loadExtendedData(int id) {
         Log.d(Constants.TAG, "Loading extended data for movie with id " + id);
         Bundle queryBundle = new Bundle();
-        queryBundle.putInt(LOADER_MOVIE_REVIEW_PARAM_MOVIE_ID, id);
-        queryBundle.putString(LOADER_MOVIE_PARAM_API_KEY, getString(R.string.themoviedb_api_key));
+        queryBundle.putInt(LOADER_PARAM_MOVIE_ID, id);
+        queryBundle.putString(LOADER_PARAM_MOVIE_API_KEY, getString(R.string.themoviedb_api_key));
 
         LoaderManager loaderManager = getSupportLoaderManager();
         Loader loaderReviews = loaderManager.getLoader(LOADER_MOVIE_REVIEW_KEY);
@@ -143,6 +168,15 @@ public class DetailActivity extends AppCompatActivity {
         } else {
             Log.d(Constants.TAG, "Restarting MovieVideos Loader");
             loaderManager.restartLoader(LOADER_MOVIE_REVIEW_KEY, queryBundle, movieVideosLoader);
+        }
+        Loader loaderSingleFavoriteVideo = loaderManager.getLoader(LOADER_SINGLE_FAVORITE_MOVIE);
+
+        if (loaderSingleFavoriteVideo == null) {
+            Log.d(Constants.TAG, "Initiating SingleFavoriteMovie Loader");
+            loaderManager.initLoader(LOADER_SINGLE_FAVORITE_MOVIE, queryBundle, movieFavoriteLoader);
+        } else {
+            Log.d(Constants.TAG, "Restarting SingleFavoriteMovie Loader");
+            loaderManager.restartLoader(LOADER_SINGLE_FAVORITE_MOVIE, queryBundle, movieFavoriteLoader);
         }
 
     }
@@ -166,5 +200,12 @@ public class DetailActivity extends AppCompatActivity {
 
     private void populateVideos(List<MovieVideo> data) {
         Log.d(Constants.TAG, "Received videos " + data);
+    }
+
+
+    private void populateFavorite(Movie data) {
+        boolean isFavorite = data != null;
+        Log.d(Constants.TAG, "Favorite Movie " + isFavorite);
+        Log.d(Constants.TAG, "Favorite Movie " + data);
     }
 }
