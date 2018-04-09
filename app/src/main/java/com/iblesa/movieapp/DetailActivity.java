@@ -78,7 +78,7 @@ public class DetailActivity extends AppCompatActivity {
         }
     };
 
-    private LoaderManager.LoaderCallbacks<Movie> movieFavoriteLoader = new LoaderManager.LoaderCallbacks<Movie>() {
+    private LoaderManager.LoaderCallbacks<Movie> favoriteMovieLoader = new LoaderManager.LoaderCallbacks<Movie>() {
         @Override
         public Loader<Movie> onCreateLoader(int id, Bundle args) {
             Log.d(Constants.TAG, "Trying to create loader for MovieReviews. loader id = "
@@ -173,10 +173,10 @@ public class DetailActivity extends AppCompatActivity {
 
         if (loaderSingleFavoriteVideo == null) {
             Log.d(Constants.TAG, "Initiating SingleFavoriteMovie Loader");
-            loaderManager.initLoader(LOADER_SINGLE_FAVORITE_MOVIE, queryBundle, movieFavoriteLoader);
+            loaderManager.initLoader(LOADER_SINGLE_FAVORITE_MOVIE, queryBundle, favoriteMovieLoader);
         } else {
             Log.d(Constants.TAG, "Restarting SingleFavoriteMovie Loader");
-            loaderManager.restartLoader(LOADER_SINGLE_FAVORITE_MOVIE, queryBundle, movieFavoriteLoader);
+            loaderManager.restartLoader(LOADER_SINGLE_FAVORITE_MOVIE, queryBundle, favoriteMovieLoader);
         }
 
     }
