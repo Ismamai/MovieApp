@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,31 +54,37 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.
 
     class MovieReviewHolder extends ViewHolder implements View.OnClickListener {
         static final int MAX_REVIEW_LENGTH = 100;
-        private static final String SEPARATOR = " - ";
+        static final int MAX_AUTHOR_LENGTH = 20;
         static final String CLICK_FOR_MORE = " ... ";
-        TextView holder;
+        TextView author;
+        TextView content;
 
         MovieReviewHolder(View itemView) {
             super(itemView);
-            holder = itemView.findViewById(R.id.tv_movie_review);
+            author = itemView.findViewById(R.id.tv_movie_review_author);
+            content = itemView.findViewById(R.id.tv_movie_review_content);
             itemView.setOnClickListener(this);
         }
 
         void bind(int element) {
             MovieReview review = reviews.get(element);
-            String substring = getPrintableString(review, review.getAuthor(), MAX_REVIEW_LENGTH);
-            holder.setText(substring);
+            content.setText(getPrintableString(review.getContent(), MAX_REVIEW_LENGTH));
+            if (TextUtils.isEmpty(review.getAuthor())) {
+                author.setText(R.string.movie_review_author_anonymous);
+            } else {
+                author.setText(getPrintableString(review.getAuthor(), MAX_AUTHOR_LENGTH));
+            }
         }
 
         @NonNull
-        private String getPrintableString(MovieReview review, String shortReview, int maxReviewLength) {
-            StringBuilder result = new StringBuilder(shortReview).append(SEPARATOR);
-            if (result.length() < maxReviewLength) {
-                String content = review.getContent();
-                if (content != null && content.length() > 0) {
-                    String substring = content.substring(0,
-                            Math.min(MAX_REVIEW_LENGTH - shortReview.length(), content.length()));
+        private String getPrintableString(String content, int maxReviewLength) {
+            StringBuilder result = new StringBuilder();
+            if (!TextUtils.isEmpty(content)) {
+                int min = Math.min(maxReviewLength, content.length());
+                String substring = content.substring(0,
+                        min);
                     result.append(substring);
+                if (min != content.length()) {
                     result.append(CLICK_FOR_MORE);
                 }
             }

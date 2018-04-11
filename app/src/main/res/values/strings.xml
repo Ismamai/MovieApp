@@ -23,4 +23,7 @@
     <string name="synopsis_sample">Believing they have left behind shadowy figures from their past, newlyweds Christian and Ana fully embrace an inextricable connection and shared life of luxury. But just as she steps into her role as Mrs. Grey and he relaxes into an unfamiliar stability, new threats could jeopardize their happy ending before it even begins.</string>
     <string name="movie_review">Movie review</string>
     <string name="reviews_label">Reviews</string>
+    <string name="movie_review_author">Author</string>
+    <string name="movie_review_content">Content of the movie review</string>
+    <string name="movie_review_author_anonymous">Anonymous</string>
 </resources>
