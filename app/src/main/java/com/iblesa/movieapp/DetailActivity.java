@@ -8,7 +8,9 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.iblesa.movieapp.data.SingleFavoriteMovieLoader;
 import com.iblesa.movieapp.databinding.ActivityDetailBinding;
@@ -220,9 +222,13 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
     @Override
     public void onListItemClick(MovieReview movieReviewSelected) {
         Log.d(Constants.TAG, "Click on Review " + movieReviewSelected);
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(movieReviewSelected.getUrl()));
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
+        if (TextUtils.isEmpty(movieReviewSelected.getUrl())) {
+            Toast.makeText(this, "Review does not have a url", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(movieReviewSelected.getUrl()));
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
         }
     }
 }
