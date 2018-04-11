@@ -2,6 +2,7 @@ package com.iblesa.movieapp;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -219,5 +220,9 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
     @Override
     public void onListItemClick(MovieReview movieReviewSelected) {
         Log.d(Constants.TAG, "Click on Review " + movieReviewSelected);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(movieReviewSelected.getUrl()));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 }
