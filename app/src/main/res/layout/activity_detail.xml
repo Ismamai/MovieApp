@@ -135,6 +135,27 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_synopsis_label"
                 tools:text="@string/synopsis_sample" />
 
+            <TextView
+                android:id="@+id/tv_reviews_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/reviews_label"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_synopsis" />
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv_reviews"
+                app:layout_constraintTop_toBottomOf="@id/tv_reviews_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+            </android.support.v7.widget.RecyclerView>
+
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </layout>

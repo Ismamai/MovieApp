@@ -6,6 +6,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 
 import com.iblesa.movieapp.data.SingleFavoriteMovieLoader;
@@ -26,9 +27,10 @@ import static com.iblesa.movieapp.Constants.LOADER_MOVIE_VIDEOS_KEY;
 import static com.iblesa.movieapp.Constants.LOADER_PARAM_MOVIE_ID;
 import static com.iblesa.movieapp.Constants.LOADER_SINGLE_FAVORITE_MOVIE;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements MovieReviewAdapter.MovieReviewListItemClickListener {
 
     ActivityDetailBinding activityDetailBinding;
+    MovieReviewAdapter movieReviewAdapter;
 
     private LoaderManager.LoaderCallbacks<List<MovieReview>> movieReviewLoader = new LoaderManager.LoaderCallbacks<List<MovieReview>>() {
         @Override
@@ -118,6 +120,10 @@ public class DetailActivity extends AppCompatActivity {
 //                testParsingMovieReviews();
 //                testParsingMovieVideos();
                 int id = movie.getId();
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                activityDetailBinding.rvReviews.setLayoutManager(linearLayoutManager);
+                movieReviewAdapter = new MovieReviewAdapter(this);
+                activityDetailBinding.rvReviews.setAdapter(movieReviewAdapter);
                 loadExtendedData(id);
 
             }
@@ -196,6 +202,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void populateReviews(List<MovieReview> data) {
         Log.d(Constants.TAG, "Received reviews " + data);
+        movieReviewAdapter.setReviews(data);
     }
 
     private void populateVideos(List<MovieVideo> data) {
@@ -207,5 +214,10 @@ public class DetailActivity extends AppCompatActivity {
         boolean isFavorite = data != null;
         Log.d(Constants.TAG, "Favorite Movie " + isFavorite);
         Log.d(Constants.TAG, "Favorite Movie " + data);
+    }
+
+    @Override
+    public void onListItemClick(MovieReview movieReviewSelected) {
+        Log.d(Constants.TAG, "Click on Review " + movieReviewSelected);
     }
 }
