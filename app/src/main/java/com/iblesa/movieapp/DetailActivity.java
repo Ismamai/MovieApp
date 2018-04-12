@@ -35,6 +35,9 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
     ActivityDetailBinding activityDetailBinding;
     MovieReviewAdapter movieReviewAdapter;
     MovieVideoAdapter movieVideoAdapter;
+    private boolean isFavorite;
+    private Movie movie;
+
 
     private LoaderManager.LoaderCallbacks<List<MovieReview>> movieReviewLoader = new LoaderManager.LoaderCallbacks<List<MovieReview>>() {
         @Override
@@ -117,7 +120,7 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
         // COMPLETED (2) Display the weather forecast that was passed from MainActivity
         if (intentThatStartedThisActivity != null) {
             if (intentThatStartedThisActivity.hasExtra(Intent.EXTRA_TEXT)) {
-                Movie movie = intentThatStartedThisActivity.getParcelableExtra(Intent.EXTRA_TEXT);
+                movie = intentThatStartedThisActivity.getParcelableExtra(Intent.EXTRA_TEXT);
                 Log.d(Constants.TAG, "Movie passed to activity " + movie);
                 activityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
                 populateUI(movie);
@@ -135,7 +138,7 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
                 activityDetailBinding.rvVideos.setAdapter(movieVideoAdapter);
 
                 loadExtendedData(id);
-            }
+                }
         }
     }
 
@@ -221,7 +224,7 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
 
 
     private void populateFavorite(Movie data) {
-        boolean isFavorite = data != null;
+        isFavorite = data != null;
         Log.d(Constants.TAG, "Favorite Movie " + isFavorite);
         Log.d(Constants.TAG, "Favorite Movie " + data);
     }
