@@ -27,4 +27,5 @@
     <string name="movie_review_content">Content of the movie review</string>
     <string name="movie_review_author_anonymous">Anonymous</string>
     <string name="videos_label">Videos</string>
+    <string name="favorite_movie_label">Favorite</string>
 </resources>
