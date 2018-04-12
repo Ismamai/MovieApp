@@ -30,10 +30,11 @@ import static com.iblesa.movieapp.Constants.LOADER_MOVIE_VIDEOS_KEY;
 import static com.iblesa.movieapp.Constants.LOADER_PARAM_MOVIE_ID;
 import static com.iblesa.movieapp.Constants.LOADER_SINGLE_FAVORITE_MOVIE;
 
-public class DetailActivity extends AppCompatActivity implements MovieReviewAdapter.MovieReviewListItemClickListener {
+public class DetailActivity extends AppCompatActivity implements MovieReviewAdapter.MovieReviewListItemClickListener, MovieVideoAdapter.MovieVideoListItemClickListener {
 
     ActivityDetailBinding activityDetailBinding;
     MovieReviewAdapter movieReviewAdapter;
+    MovieVideoAdapter movieVideoAdapter;
 
     private LoaderManager.LoaderCallbacks<List<MovieReview>> movieReviewLoader = new LoaderManager.LoaderCallbacks<List<MovieReview>>() {
         @Override
@@ -127,8 +128,13 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
                 activityDetailBinding.rvReviews.setLayoutManager(linearLayoutManager);
                 movieReviewAdapter = new MovieReviewAdapter(this);
                 activityDetailBinding.rvReviews.setAdapter(movieReviewAdapter);
-                loadExtendedData(id);
 
+                LinearLayoutManager linearLayoutManagerVideos = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                activityDetailBinding.rvVideos.setLayoutManager(linearLayoutManagerVideos);
+                movieVideoAdapter = new MovieVideoAdapter(this);
+                activityDetailBinding.rvVideos.setAdapter(movieVideoAdapter);
+
+                loadExtendedData(id);
             }
         }
     }
@@ -210,6 +216,7 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
 
     private void populateVideos(List<MovieVideo> data) {
         Log.d(Constants.TAG, "Received videos " + data);
+        movieVideoAdapter.setVideos(data);
     }
 
 
@@ -230,5 +237,19 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
                 startActivity(intent);
             }
         }
+    }
+
+    @Override
+    public void onMovieVideoListItemClick(MovieVideo movieVideoSelected) {
+        Log.d(Constants.TAG, "Click on Video " + movieVideoSelected);
+        if (TextUtils.isEmpty(movieVideoSelected.getKey())) {
+            Toast.makeText(this, "Video not ok", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=" + movieVideoSelected.getKey()));
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+        }
+
     }
 }
