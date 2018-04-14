@@ -1,5 +1,6 @@
 package com.iblesa.movieapp;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -10,8 +11,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import com.iblesa.movieapp.data.MovieContract;
 import com.iblesa.movieapp.data.SingleFavoriteMovieLoader;
 import com.iblesa.movieapp.databinding.ActivityDetailBinding;
 import com.iblesa.movieapp.model.Movie;
@@ -127,8 +130,11 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
 //                testParsingMovieReviews();
 //                testParsingMovieVideos();
                 int id = movie.getId();
+
+                //Initialize LayoutManager for Reviews
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
                 activityDetailBinding.rvReviews.setLayoutManager(linearLayoutManager);
+                //Initialize MovieReviewAdapter
                 movieReviewAdapter = new MovieReviewAdapter(this);
                 activityDetailBinding.rvReviews.setAdapter(movieReviewAdapter);
 
@@ -138,7 +144,7 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
                 activityDetailBinding.rvVideos.setAdapter(movieVideoAdapter);
 
                 loadExtendedData(id);
-                }
+            }
         }
     }
 
@@ -222,11 +228,42 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
         movieVideoAdapter.setVideos(data);
     }
 
-
     private void populateFavorite(Movie data) {
         isFavorite = data != null;
         Log.d(Constants.TAG, "Favorite Movie " + isFavorite);
         Log.d(Constants.TAG, "Favorite Movie " + data);
+        activityDetailBinding.tbFavoriteMovie.setChecked(isFavorite);
+        activityDetailBinding.tbFavoriteMovie.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Uri contentUri = MovieContract.MovieEntry.CONTENT_URI;
+                if (isChecked) {
+                    Log.d(Constants.TAG, "Movie has been marked as favorite");
+                    ContentValues cv = new ContentValues();
+                    cv.put(MovieContract.MovieEntry.COLUMN_TITLE, movie.getTitle());
+                    cv.put(MovieContract.MovieEntry._ID, movie.getId());
+                    cv.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, movie.getOverview());
+                    cv.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
+                    cv.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
+                    cv.put(MovieContract.MovieEntry.COLUMN_POPULARITY, movie.getPopularity());
+                    cv.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, movie.getPosterPath());
+                    cv.put(MovieContract.MovieEntry.COLUMN_BACKDROP_PATH, movie.getBackdrop_path());
+                    cv.put(MovieContract.MovieEntry.COLUMN_VIDEO, movie.isVideo());
+                    Uri insert = getBaseContext().getContentResolver().insert(contentUri, cv);
+
+                    Log.d(Constants.TAG, "Added movie as Favorite " + movie + " with uri " + insert);
+                } else {
+                    Log.d(Constants.TAG, "Movie has been removed from favorites");
+                    contentUri = contentUri.buildUpon().appendPath(Integer.toString(movie.getId())).build();
+                    int numRowsDeleted = getBaseContext().getContentResolver()
+                            .delete(contentUri,
+                                    null,
+                                    null);
+                    Log.d(Constants.TAG, "Deleted Favorite movie " + movie);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -253,6 +290,5 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
                 startActivity(intent);
             }
         }
-
     }
 }
