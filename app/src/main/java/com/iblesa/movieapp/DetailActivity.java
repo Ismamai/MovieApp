@@ -219,12 +219,12 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
     }
 
     private void populateReviews(List<MovieReview> data) {
-        Log.d(Constants.TAG, "Received reviews " + data);
+        Log.d(Constants.TAG, "Received reviews. Number of reviews " + data.size());
         movieReviewAdapter.setReviews(data);
     }
 
     private void populateVideos(List<MovieVideo> data) {
-        Log.d(Constants.TAG, "Received videos " + data);
+        Log.d(Constants.TAG, "Received videos. Number or videos " + data.size());
         movieVideoAdapter.setVideos(data);
     }
 
