@@ -220,6 +220,7 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
 
     private void populateReviews(List<MovieReview> data) {
         Log.d(Constants.TAG, "Received reviews. Number of reviews " + data.size());
+        activityDetailBinding.tvReviewsCounter.setText("(" + data.size() + ")");
         movieReviewAdapter.setReviews(data);
     }
 
