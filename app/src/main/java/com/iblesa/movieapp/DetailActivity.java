@@ -138,7 +138,7 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
                 movieReviewAdapter = new MovieReviewAdapter(this);
                 activityDetailBinding.rvReviews.setAdapter(movieReviewAdapter);
 
-                LinearLayoutManager linearLayoutManagerVideos = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                LinearLayoutManager linearLayoutManagerVideos = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
                 activityDetailBinding.rvVideos.setLayoutManager(linearLayoutManagerVideos);
                 movieVideoAdapter = new MovieVideoAdapter(this);
                 activityDetailBinding.rvVideos.setAdapter(movieVideoAdapter);
