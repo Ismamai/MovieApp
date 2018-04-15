@@ -191,7 +191,7 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
             loaderManager.initLoader(LOADER_MOVIE_VIDEOS_KEY, queryBundle, movieVideosLoader);
         } else {
             Log.d(Constants.TAG, "Restarting MovieVideos Loader");
-            loaderManager.restartLoader(LOADER_MOVIE_REVIEW_KEY, queryBundle, movieVideosLoader);
+            loaderManager.restartLoader(LOADER_MOVIE_VIDEOS_KEY, queryBundle, movieVideosLoader);
         }
         Loader loaderSingleFavoriteVideo = loaderManager.getLoader(LOADER_SINGLE_FAVORITE_MOVIE);
 
