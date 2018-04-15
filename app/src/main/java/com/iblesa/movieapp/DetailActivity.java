@@ -226,6 +226,7 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
 
     private void populateVideos(List<MovieVideo> data) {
         Log.d(Constants.TAG, "Received videos. Number or videos " + data.size());
+        activityDetailBinding.tvVideosCounter.setText("(" + data.size() + ")");
         movieVideoAdapter.setVideos(data);
     }
 
