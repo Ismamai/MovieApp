@@ -132,7 +132,7 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
                 int id = movie.getId();
 
                 //Initialize LayoutManager for Reviews
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
                 activityDetailBinding.rvReviews.setLayoutManager(linearLayoutManager);
                 //Initialize MovieReviewAdapter
                 movieReviewAdapter = new MovieReviewAdapter(this);
