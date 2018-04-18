@@ -12,11 +12,14 @@ import com.iblesa.movieapp.model.SortCriteria;
 import com.iblesa.movieapp.util.MovieParser;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * This class will deal with network interaction with TheMovieDB api
@@ -29,7 +32,7 @@ public class MovieAPI extends AsyncTaskLoader<List<Movie>> {
 
     private String apiKey;
     private final String sortCriteria;
-
+    private OkHttpClient client = new OkHttpClient();
 
     public MovieAPI(Context context, String apiKey, String sortCriteria) {
         super(context);
@@ -41,38 +44,20 @@ public class MovieAPI extends AsyncTaskLoader<List<Movie>> {
     private List<Movie> getMoviesFromUrl(Uri uri) {
         try {
             Log.d(Constants.TAG, "Loading data from uri " + uri);
-            String responseFromHttpUrl = getResponseFromHttpUrl(new URL(uri.toString()));
-            return MovieParser.parseJSON(responseFromHttpUrl);
+            Request request = new Request.Builder()
+                    .url(new URL(uri.toString()))
+                    .build();
+            try (Response response = client.newCall(request).execute()) {
+                ResponseBody body = response.body();
+                if (body != null) {
+                    return MovieParser.parseJSON(body.string());
+                } else {
+                    return new ArrayList<>();
+                }
+            }
         } catch (IOException e) {
             Log.e(Constants.TAG, "Error getting external content for url " + uri.toString(), e);
             return null;
-        }
-    }
-
-
-    /**
-     * This method returns the entire result from the HTTP response.
-     *
-     * @param url The URL to fetch the HTTP response from.
-     * @return The contents of the HTTP response.
-     * @throws IOException Related to network and stream reading
-     */
-    private String getResponseFromHttpUrl(URL url) throws IOException {
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        try {
-            InputStream in = urlConnection.getInputStream();
-
-            Scanner scanner = new Scanner(in);
-            scanner.useDelimiter("\\A");
-
-            boolean hasInput = scanner.hasNext();
-            if (hasInput) {
-                return scanner.next();
-            } else {
-                return null;
-            }
-        } finally {
-            urlConnection.disconnect();
         }
     }
 
