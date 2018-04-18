@@ -12,8 +12,6 @@ import com.iblesa.movieapp.data.MovieContract;
 import com.iblesa.movieapp.data.MovieUtils;
 import com.iblesa.movieapp.model.Movie;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.List;
 

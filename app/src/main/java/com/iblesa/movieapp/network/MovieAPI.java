@@ -11,8 +11,6 @@ import com.iblesa.movieapp.model.Movie;
 import com.iblesa.movieapp.model.SortCriteria;
 import com.iblesa.movieapp.util.MovieParser;
 
-import org.json.JSONException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;

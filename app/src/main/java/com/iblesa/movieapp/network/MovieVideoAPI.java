@@ -10,8 +10,6 @@ import com.iblesa.movieapp.Constants;
 import com.iblesa.movieapp.model.MovieVideo;
 import com.iblesa.movieapp.util.MovieVideoParser;
 
-import org.json.JSONException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
