@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.iblesa.movieapp.Constants;
-import com.iblesa.movieapp.MainActivity;
 import com.iblesa.movieapp.data.MovieContract.MovieEntry;
 
 /**
