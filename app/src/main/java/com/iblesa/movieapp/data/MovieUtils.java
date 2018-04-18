@@ -19,7 +19,7 @@ public class MovieUtils {
         cv.put(MovieEntry.COLUMN_POPULARITY, movie.getPopularity());
         cv.put(MovieEntry.COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
         cv.put(MovieEntry.COLUMN_POSTER_PATH, movie.getPosterPath());
-        cv.put(MovieEntry.COLUMN_BACKDROP_PATH, movie.getBackdrop_path());
+        cv.put(MovieEntry.COLUMN_BACKDROP_PATH, movie.getBackdropPath());
         cv.put(MovieEntry.COLUMN_VIDEO, movie.isVideo() ? 1 : 0);
         return cv;
     }
@@ -27,7 +27,7 @@ public class MovieUtils {
     public static Movie getMovie(Cursor cursor) {
         Movie.Builder builder = new Movie.Builder();
 
-        Movie movie = builder.id(cursor.getInt(cursor.getColumnIndex(MovieEntry._ID)))
+        return builder.id(cursor.getInt(cursor.getColumnIndex(MovieEntry._ID)))
                 .title(cursor.getString(cursor.getColumnIndex(MovieEntry.COLUMN_TITLE)))
                 .overview(cursor.getString(cursor.getColumnIndex(MovieEntry.COLUMN_OVERVIEW)))
                 .releaseDate(cursor.getString(cursor.getColumnIndex(MovieEntry.COLUMN_RELEASE_DATE)))
@@ -37,8 +37,6 @@ public class MovieUtils {
                 .backdropPath(cursor.getString(cursor.getColumnIndex(MovieEntry.COLUMN_BACKDROP_PATH)))
                 .video(cursor.getInt(cursor.getColumnIndex(MovieEntry.COLUMN_VIDEO)) == 1)
                 .build();
-
-        return movie;
 
     }
 }

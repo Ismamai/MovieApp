@@ -3,6 +3,11 @@ package com.iblesa.movieapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 /**
  * Movie model class. Contains all Movie properties. This class is immutable, in order to
  * modify its values, just use Builder provided.
@@ -10,18 +15,51 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
 
-    private int id;
-    private String title;
-    private String overview;
-    private String releaseDate;
-    private float voteAverage;
-    private float popularity;
+    @SerializedName("poster_path")
+    @Expose
     private String posterPath;
-    private String backdrop_path;
+    @SerializedName("adult")
+    @Expose
+    private boolean adult;
+    @SerializedName("overview")
+    @Expose
+    private String overview;
+    @SerializedName("release_date")
+    @Expose
+    private String releaseDate;
+    @SerializedName("genre_ids")
+    @Expose
+    private List<Integer> genreIds = null;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("original_title")
+    @Expose
+    private String originalTitle;
+    @SerializedName("original_language")
+    @Expose
+    private String originalLanguage;
+    @SerializedName("title")
+    @Expose
+    private String title;
+    @SerializedName("backdrop_path")
+    @Expose
+    private String backdropPath;
+    @SerializedName("popularity")
+    @Expose
+    private float popularity;
+    @SerializedName("vote_count")
+    @Expose
+    private int voteCount;
+    @SerializedName("video")
+    @Expose
     private boolean video;
+    @SerializedName("vote_average")
+    @Expose
+    private float voteAverage;
 
 
-    public Movie(int id, String title, String overview, String releaseDate, float voteAverage, float popularity, String posterPath, String backdrop_path, boolean video) {
+    public Movie(int id, String title, String overview, String releaseDate, float voteAverage, float popularity, String posterPath, String backdropPath, boolean video) {
         this.id = id;
         this.title = title;
         this.overview = overview;
@@ -29,7 +67,7 @@ public class Movie implements Parcelable {
         this.voteAverage = voteAverage;
         this.popularity = popularity;
         this.posterPath = posterPath;
-        this.backdrop_path = backdrop_path;
+        this.backdropPath = backdropPath;
         this.video = video;
     }
 
@@ -39,7 +77,7 @@ public class Movie implements Parcelable {
         overview = in.readString();
         releaseDate = in.readString();
         posterPath = in.readString();
-        backdrop_path = in.readString();
+        backdropPath = in.readString();
         voteAverage = in.readFloat();
         popularity = in.readFloat();
         video = in.readInt() == 1;
@@ -57,7 +95,7 @@ public class Movie implements Parcelable {
         dest.writeString(overview);
         dest.writeString(releaseDate);
         dest.writeString(posterPath);
-        dest.writeString(backdrop_path);
+        dest.writeString(backdropPath);
         dest.writeFloat(voteAverage);
         dest.writeFloat(popularity);
         dest.writeInt(video ? 1 : 0);
@@ -135,7 +173,7 @@ public class Movie implements Parcelable {
                 ", voteAverage=" + voteAverage +
                 ", popularity=" + popularity +
                 ", posterPath='" + posterPath + '\'' +
-                ", backdrop_path='" + backdrop_path + '\'' +
+                ", backdrop_path='" + backdropPath + '\'' +
                 ", video=" + video +
                 '}';
     }
@@ -144,8 +182,8 @@ public class Movie implements Parcelable {
         return posterPath;
     }
 
-    public String getBackdrop_path() {
-        return backdrop_path;
+    public String getBackdropPath() {
+        return backdropPath;
     }
 
     public boolean isVideo() {
@@ -183,7 +221,7 @@ public class Movie implements Parcelable {
             this.voteAverage = movie.getVoteAverage();
             this.popularity = movie.getPopularity();
             this.posterPath = movie.getPosterPath();
-            this.backdrop_path = movie.getBackdrop_path();
+            this.backdrop_path = movie.getBackdropPath();
             this.video = movie.isVideo();
         }
 

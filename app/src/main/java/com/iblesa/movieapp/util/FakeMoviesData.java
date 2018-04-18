@@ -24,13 +24,7 @@ import java.util.List;
 public class FakeMoviesData {
 
     public static List<Movie> getFakeMoviesData(Context context) {
-        List<Movie> movies = new ArrayList<>();
-        try {
-            movies = MovieParser.parseMovieJSON(context.getString(R.string.movies_result));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return movies;
+        return MovieParser.parseJSON(context.getString(R.string.movies_result));
     }
 
     public static void populateFakeData(SQLiteDatabase db, List<Movie> movies) {

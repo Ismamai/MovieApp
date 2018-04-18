@@ -233,7 +233,7 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
                     cv.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
                     cv.put(MovieContract.MovieEntry.COLUMN_POPULARITY, movie.getPopularity());
                     cv.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, movie.getPosterPath());
-                    cv.put(MovieContract.MovieEntry.COLUMN_BACKDROP_PATH, movie.getBackdrop_path());
+                    cv.put(MovieContract.MovieEntry.COLUMN_BACKDROP_PATH, movie.getBackdropPath());
                     cv.put(MovieContract.MovieEntry.COLUMN_VIDEO, movie.isVideo());
                     Uri insert = getBaseContext().getContentResolver().insert(contentUri, cv);
 
