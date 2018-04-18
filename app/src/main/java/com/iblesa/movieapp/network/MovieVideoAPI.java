@@ -43,12 +43,9 @@ public class MovieVideoAPI extends AsyncTaskLoader<List<MovieVideo>> {
         try {
             Log.d(Constants.TAG, "Loading data from uri " + uri);
             String responseFromHttpUrl = getResponseFromHttpUrl(new URL(uri.toString()));
-            return MovieVideoParser.parseMovieVideoJSON(responseFromHttpUrl);
+            return MovieVideoParser.parseJSON(responseFromHttpUrl);
         } catch (IOException e) {
             Log.e(Constants.TAG, "Error getting external content for url " + uri.toString(), e);
-            return null;
-        } catch (JSONException e) {
-            Log.e(Constants.TAG, "Error parsing json", e);
             return null;
         }
     }
