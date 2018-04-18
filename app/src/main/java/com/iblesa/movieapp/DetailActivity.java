@@ -127,8 +127,6 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
                 Log.d(Constants.TAG, "Movie passed to activity " + movie);
                 activityDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
                 populateUI(movie);
-//                testParsingMovieReviews();
-//                testParsingMovieVideos();
                 int id = movie.getId();
 
                 //Initialize LayoutManager for Reviews
@@ -147,28 +145,6 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
             }
         }
     }
-
-//    private void testParsingMovieReviews() {
-//        List<MovieReview> movieReviews = null;
-//        try {
-//            movieReviews = MovieReviewParser.parseMovieReviewJSON(getString(R.string.movie_reviews_sample));
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//            Log.e(Constants.TAG, "Error parsing data ", e);
-//        }
-//        Log.d(Constants.TAG, "Reviews is " + movieReviews);
-//    }
-
-//        private void testParsingMovieVideos() {
-//        List<MovieVideo> movieReviews = null;
-//        try {
-//            movieReviews = MovieVideoParser.parseMovieVideoJSON(getString(R.string.movie_videos_sample));
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//            Log.e(Constants.TAG, "Error parsing data ", e);
-//        }
-//        Log.d(Constants.TAG, "Videos is " + movieReviews);
-//    }
 
     private void loadExtendedData(int id) {
         Log.d(Constants.TAG, "Loading extended data for movie with id " + id);
