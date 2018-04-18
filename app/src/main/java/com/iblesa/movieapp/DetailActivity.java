@@ -195,14 +195,22 @@ public class DetailActivity extends AppCompatActivity implements MovieReviewAdap
     }
 
     private void populateReviews(List<MovieReview> data) {
-        Log.d(Constants.TAG, "Received reviews. Number of reviews " + data.size());
-        activityDetailBinding.tvReviewsCounter.setText("(" + data.size() + ")");
+        int counter = 0;
+        if (data != null) {
+            counter = data.size();
+        }
+        Log.d(Constants.TAG, "Received reviews. Number of reviews " + counter);
+        activityDetailBinding.tvReviewsCounter.setText(getString(R.string.reviews_counter,counter));
         movieReviewAdapter.setReviews(data);
     }
 
     private void populateVideos(List<MovieVideo> data) {
-        Log.d(Constants.TAG, "Received videos. Number or videos " + data.size());
-        activityDetailBinding.tvVideosCounter.setText("(" + data.size() + ")");
+        int counter = 0;
+        if (data != null) {
+            counter = data.size();
+        }
+        Log.d(Constants.TAG, "Received videos. Number or videos " + counter);
+        activityDetailBinding.tvVideosCounter.setText(getString(R.string.videos_counter,counter));
         movieVideoAdapter.setVideos(data);
     }
 

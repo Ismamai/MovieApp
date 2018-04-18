@@ -30,4 +30,6 @@
     <string name="favorite_movie_label">Favorite</string>
     <string name="favorite">Favorite</string>
     <string name="not_favorite">Not Favorite</string>
+    <string name="videos_counter">(%1$d)</string>
+    <string name="reviews_counter">(%1$d)</string>
 </resources>
