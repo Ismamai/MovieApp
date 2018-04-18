@@ -10,8 +10,6 @@ import com.iblesa.movieapp.Constants;
 import com.iblesa.movieapp.model.MovieReview;
 import com.iblesa.movieapp.util.MovieReviewParser;
 
-import org.json.JSONException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -43,12 +41,9 @@ public class MovieReviewAPI extends AsyncTaskLoader<List<MovieReview>> {
         try {
             Log.d(Constants.TAG, "Loading data from uri " + uri);
             String responseFromHttpUrl = getResponseFromHttpUrl(new URL(uri.toString()));
-            return MovieReviewParser.parseMovieReviewJSON(responseFromHttpUrl);
+            return MovieReviewParser.parseJSON(responseFromHttpUrl);
         } catch (IOException e) {
             Log.e(Constants.TAG, "Error getting external content for url " + uri.toString(), e);
-            return null;
-        } catch (JSONException e) {
-            Log.e(Constants.TAG, "Error parsing json", e);
             return null;
         }
     }
